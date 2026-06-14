@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant Cloud™ — AI-Powered Smart Agriculture</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--g50:#E8FDF3;--g100:#C3F5DE;--g200:#86E8BC;--g300:#3DD4A0;--g400:#22B07D;--g500:#1A9469;--g600:#0F7A5A;--g700:#0A5A43;--g800:#06402F;--g900:#03281E;
+--b50:#E8F4FF;--b100:#BAE0FF;--b300:#60BFFF;--b400:#3B9AE1;--b600:#1A6DB5;
+--y50:#FFFCE8;--y100:#FFF3B0;--y300:#FFE040;--y400:#FFCA28;--y500:#F9A825;--y600:#E65100;
+--a50:#FFF3E0;--a400:#FFA726;--a600:#E65100;
+--p50:#F3F0FF;--p300:#A89CF5;--p400:#8B7CF6;--p600:#5B4BD4;
+--r50:#FFF0F0;--r400:#EF5350;--r600:#C62828;
+--teal50:#E0FDFA;--teal400:#26C6DA;
+--gray50:#F5FAF7;--gray100:#EBF5EF;--gray150:#DCF0E5;--gray200:#C8E0D4;
+--gray300:#9FC0B0;--gray400:#6B9080;--gray500:#4A6A5A;--gray600:#334D45;
+--gray700:#1F3028;--gray800:#131E18;--gray900:#0A140D;
+--white:#FFFFFF;
+--font-d:'Space Grotesk',sans-serif;
+--font-b:'Inter',sans-serif;
+--r-xs:4px;--r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;--r-2xl:30px;--r-full:9999px;
+--sh-xs:0 1px 4px rgba(6,64,47,.08);
+--sh-sm:0 2px 10px rgba(6,64,47,.10);
+--sh-md:0 6px 24px rgba(6,64,47,.13);
+--sh-lg:0 16px 56px rgba(6,64,47,.18);
+--sh-xl:0 32px 80px rgba(6,64,47,.22);
+--tr:.2s ease;--tr-s:.3s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--gray50);color:var(--gray800);font-size:15px;line-height:1.65;overflow-x:hidden}
+img{max-width:100%}
+button{font-family:var(--font-b);cursor:pointer;border:none;outline:none}
+input,textarea,select{font-family:var(--font-b);outline:none}
+a{text-decoration:none;color:inherit}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--gray100)}
+::-webkit-scrollbar-thumb{background:var(--g300);border-radius:3px}
+
+/* ─── DARK MODE ─── */
+body.dark{
+  --gray50:#0A140D;--gray100:#0F1E14;--gray150:#152219;--gray200:#1C2E22;
+  --gray300:#2A4034;--gray400:#3D6050;--gray500:#557A6A;--gray600:#82A898;
+  --gray700:#B0CBB8;--gray800:#D4EAD8;--gray900:#EEF8F0;
+  --white:#111E15;--g50:#091A10;--g100:#112817;--b50:#0A1B2A;
+  --y50:#1A1600;--p50:#110D28;--r50:#1A0808;--teal50:#061618;
+}
+body.dark .nav-bar{background:rgba(9,20,13,.96)}
+body.dark .sidebar{background:var(--gray100);border-right-color:var(--gray200)}
+body.dark .section-card,.dark .zone-card,.dark .mkt-card,.dark .rec-card,
+.dark .forum-card,.dark .story-card,.dark .ach-card,.dark .step-card{
+  background:var(--gray100);border-color:var(--gray200)}
+body.dark .stat-tile{background:var(--gray150)}
+body.dark .mkt-img,.dark .upload-zone{background:var(--gray200)}
+body.dark .form-input,.dark .np-input{background:var(--gray200);border-color:var(--gray300);color:var(--gray900)}
+body.dark .modal-box,.dark .cart-panel,.dark .chat-box,.dark .payment-box{background:var(--gray100);border-color:var(--gray200)}
+body.dark .modal-tabs-bar{background:var(--gray200)}
+body.dark .modal-tab-btn.active{background:var(--gray100)}
+body.dark .hero-section{background:linear-gradient(160deg,#091a10 0%,#0a1b2a 60%,#1a1600 100%)}
+body.dark .cat-chip{background:var(--gray200);border-color:var(--gray300)}
+body.dark .tag-chip{background:var(--gray200);color:var(--gray700);border-color:var(--gray300)}
+body.dark .tag-chip.active{background:var(--g50);color:var(--g300);border-color:var(--g100)}
+body.dark .conf-bg{background:var(--gray300)}
+body.dark .prog-bg{background:var(--gray300)}
+
+/* ─── UTILITY ─── */
+.hidden{display:none!important}
+.fade-in{animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.bounce-in{animation:bounceIn .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes bounceIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+.slide-up{animation:slideUp .35s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* ─── BUTTONS ─── */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:var(--r-md);font-size:14px;font-weight:600;transition:all var(--tr-s);cursor:pointer;border:none;font-family:var(--font-b)}
+.btn-primary{background:linear-gradient(135deg,var(--g400),var(--g600));color:#fff;box-shadow:0 4px 16px rgba(22,176,125,.32)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(22,176,125,.42)}
+.btn-outline{background:transparent;color:var(--g600);border:2px solid var(--g400)}
+.btn-outline:hover{background:var(--g50);transform:translateY(-1px)}
+.btn-yellow{background:linear-gradient(135deg,var(--y400),var(--y500));color:#333;box-shadow:0 4px 16px rgba(249,168,37,.3)}
+.btn-yellow:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(249,168,37,.42)}
+.btn-danger{background:linear-gradient(135deg,var(--r400),var(--r600));color:#fff}
+.btn-danger:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(239,83,80,.35)}
+.btn-sm{padding:7px 14px;font-size:12.5px}
+.btn-icon-only{width:38px;height:38px;padding:0;border-radius:var(--r-md);display:inline-flex;align-items:center;justify-content:center;font-size:16px}
+
+/* ─── NAV ─── */
+.nav-bar{position:sticky;top:0;z-index:400;background:rgba(245,250,247,.96);backdrop-filter:blur(16px);border-bottom:1.5px solid var(--gray200);height:62px;display:flex;align-items:center;padding:0 24px;gap:12px;box-shadow:var(--sh-xs)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--font-d);font-size:19px;font-weight:800;color:var(--g600);flex-shrink:0}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--g400),var(--g700));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(15,122,90,.35)}
+.logo-mark i{font-size:19px;color:#fff}
+.logo-sup{font-size:10px;vertical-align:super;font-weight:700;color:var(--g300)}
+.nav-links{display:flex;gap:2px;flex:1;justify-content:center;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.nav-links::-webkit-scrollbar{display:none}
+.nav-link{padding:7px 13px;font-size:13.5px;color:var(--gray500);border-radius:var(--r-md);transition:all var(--tr);background:none}
+.nav-link:hover{background:var(--g50);color:var(--g600)}
+.nav-link.active{background:var(--g50);color:var(--g600);font-weight:600}
+.nav-right{display:flex;align-items:center;gap:8px}
+.cart-badge-btn{position:relative}
+.cart-num{position:absolute;top:-5px;right:-5px;width:18px;height:18px;background:var(--r400);color:#fff;font-size:10px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.user-chip{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 6px;border-radius:var(--r-full);border:1.5px solid var(--gray200);background:var(--white);cursor:pointer;transition:all var(--tr);font-size:13px;font-weight:500;color:var(--gray700)}
+.user-chip:hover{border-color:var(--g300);background:var(--g50)}
+.user-avatar-sm{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--g400),var(--b400));display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;font-weight:700}
+
+/* ─── LAYOUT ─── */
+.page-wrap{display:flex;min-height:calc(100vh - 62px)}
+.sidebar{width:220px;flex-shrink:0;background:var(--white);border-right:1.5px solid var(--gray200);padding:16px 10px;display:flex;flex-direction:column;gap:2px;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto}
+.sb-sec{font-size:10.5px;font-weight:700;color:var(--gray400);letter-spacing:.08em;text-transform:uppercase;padding:10px 10px 4px;margin-top:4px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:var(--r-md);font-size:13.5px;color:var(--gray500);transition:all var(--tr);width:100%;text-align:left;background:none}
+.sb-item:hover{background:var(--g50);color:var(--g600)}
+.sb-item.active{background:var(--g50);color:var(--g600);font-weight:600}
+.sb-item i{font-size:17px;flex-shrink:0}
+.sb-badge{margin-left:auto;background:var(--y400);color:#333;font-size:10px;font-weight:700;padding:2px 7px;border-radius:var(--r-full)}
+.main-area{flex:1;overflow-x:hidden}
+
+/* ─── PAGES ─── */
+.page{display:none;padding:28px;animation:fadeIn .25s ease}
+.page.active{display:block}
+.page-header{margin-bottom:24px}
+.page-header h1{font-family:var(--font-d);font-size:24px;font-weight:700;color:var(--gray900);margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.page-header h1 i{font-size:26px;color:var(--g400)}
+.page-header p{font-size:14px;color:var(--gray500)}
+
+/* ─── SECTION TITLE ─── */
+.sec-title{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--gray900);margin-bottom:14px}
+.sec-title i{font-size:19px;color:var(--g400)}
+
+/* ─── SECTION CARD ─── */
+.section-card{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-xl);padding:22px;margin-bottom:16px;transition:box-shadow var(--tr)}
+.section-card:hover{box-shadow:var(--sh-sm)}
+
+/* ─── HERO ─── */
+.hero-section{background:linear-gradient(160deg,#e8fdf3 0%,#e8f4ff 55%,#fffce8 100%);padding:0;overflow:hidden;position:relative}
+.hero-inner{display:flex;align-items:center;gap:48px;padding:60px 56px 56px;max-width:100%}
+.hero-text{flex:1;min-width:0;position:relative;z-index:2}
+.hero-visual{flex:0 0 380px;position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(34,176,125,.12);color:var(--g700);font-size:12px;font-weight:700;padding:6px 16px;border-radius:var(--r-full);margin-bottom:20px;letter-spacing:.05em;text-transform:uppercase;border:1px solid rgba(34,176,125,.25)}
+.hero-h1{font-family:var(--font-d);font-size:46px;font-weight:800;line-height:1.12;color:var(--gray900);margin-bottom:16px;letter-spacing:-.5px}
+.hero-h1 .grad{background:linear-gradient(135deg,var(--g400),var(--b400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-p{font-size:16.5px;color:var(--gray500);line-height:1.75;margin-bottom:28px;max-width:460px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:24px;margin-top:32px;flex-wrap:wrap}
+.hero-stat .sv{font-family:var(--font-d);font-size:26px;font-weight:800;color:var(--gray900)}
+.hero-stat .sl{font-size:12px;color:var(--gray400);margin-top:1px}
+.hero-stat .su{font-size:15px;color:var(--g400)}
+.hero-divider{width:1px;background:var(--gray200);align-self:stretch;margin:4px 0}
+.mascot{font-size:56px;animation:mascotBob 2.5s ease-in-out infinite;display:inline-block}
+@keyframes mascotBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+.hero-farm-anim{width:100%;height:280px;background:linear-gradient(180deg,#c3f5de 0%,#86e8bc 60%,#3dd4a0 100%);border-radius:var(--r-2xl);overflow:hidden;position:relative;box-shadow:var(--sh-lg)}
+.hero-bg-blob{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none}
+.blob1{width:300px;height:300px;background:rgba(34,176,125,.15);top:-100px;right:200px}
+.blob2{width:200px;height:200px;background:rgba(59,154,225,.12);bottom:-50px;left:100px}
+.blob3{width:250px;height:250px;background:rgba(255,202,40,.1);top:0;right:0}
+
+/* ─── STAT TILES ─── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+.stat-tile{background:var(--gray100);border-radius:var(--r-lg);padding:18px;transition:all var(--tr);position:relative;overflow:hidden;border:1.5px solid transparent}
+.stat-tile:hover{transform:translateY(-3px);box-shadow:var(--sh-sm);border-color:var(--g100)}
+.stat-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r-lg) var(--r-lg) 0 0}
+.st-g::after{background:linear-gradient(90deg,var(--g400),var(--g200))}
+.st-b::after{background:linear-gradient(90deg,var(--b400),var(--b100))}
+.st-y::after{background:linear-gradient(90deg,var(--y400),var(--y100))}
+.st-p::after{background:linear-gradient(90deg,var(--p400),var(--p300))}
+.st-t::after{background:linear-gradient(90deg,var(--teal400),#80DEEA)}
+.st-label{font-size:12px;color:var(--gray400);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.st-label i{font-size:15px}
+.st-val{font-family:var(--font-d);font-size:28px;font-weight:800;color:var(--gray900)}
+.st-unit{font-size:15px;color:var(--gray400);font-weight:400}
+.st-delta{font-size:11.5px;margin-top:5px}
+.d-up{color:var(--g500)}.d-dn{color:var(--r600)}
+
+/* ─── HOW IT WORKS ─── */
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:28px}
+.step-card{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-xl);padding:24px;text-align:center;transition:all .3s ease;position:relative;overflow:hidden;cursor:default}
+.step-card:hover{transform:translateY(-5px);box-shadow:var(--sh-md);border-color:var(--g200)}
+.step-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--g50) 0%,transparent 50%);opacity:0;transition:opacity var(--tr)}
+.step-card:hover::before{opacity:1}
+.step-num{width:42px;height:42px;background:linear-gradient(135deg,var(--g400),var(--g600));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:19px;font-weight:800;margin:0 auto 14px}
+.step-icon{font-size:38px;margin-bottom:12px;display:block}
+.step-card h4{font-size:14.5px;font-weight:700;color:var(--gray900);margin-bottom:7px}
+.step-card p{font-size:12.5px;color:var(--gray500);line-height:1.65}
+
+/* ─── WEATHER ─── */
+.weather-card{background:linear-gradient(135deg,#FFFCE8,#FFF3E0);border:1.5px solid var(--gray200);border-radius:var(--r-xl);padding:22px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;transition:box-shadow var(--tr)}
+.weather-card:hover{box-shadow:var(--sh-sm)}
+.w-icon{width:58px;height:58px;background:linear-gradient(135deg,var(--y400),var(--a400));border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(255,202,40,.4)}
+.w-icon i{font-size:28px;color:#fff}
+.w-temp{font-family:var(--font-d);font-size:34px;font-weight:800;color:var(--gray900)}
+.w-loc{font-size:13px;color:var(--gray500);margin-top:2px}
+.w-details{display:flex;gap:28px;flex-wrap:wrap}
+.wd-val{font-size:17px;font-weight:700;color:var(--gray900);font-family:var(--font-d)}
+.wd-label{font-size:11px;color:var(--gray400);margin-top:2px}
+
+/* ─── AI RECS ─── */
+.rec-card{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-lg);padding:16px 18px;display:flex;gap:14px;align-items:flex-start;margin-bottom:12px;transition:all var(--tr)}
+.rec-card:hover{border-color:var(--g200);box-shadow:var(--sh-sm);transform:translateX(4px)}
+.rec-ic{width:44px;height:44px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ri-g{background:var(--g50)}.ri-a{background:var(--a50)}.ri-b{background:var(--b50)}.ri-y{background:var(--y50)}.ri-p{background:var(--p50)}
+.ri-g i{color:var(--g700)}.ri-a i{color:var(--a600)}.ri-b i{color:var(--b600)}.ri-y i{color:var(--y600)}.ri-p i{color:var(--p600)}
+.rec-ic i{font-size:21px}
+.rec-title{font-size:14px;font-weight:700;color:var(--gray900);margin-bottom:4px}
+.rec-desc{font-size:13px;color:var(--gray500);line-height:1.55}
+.pb{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--r-full);margin-top:8px}
+.pb-hi{background:var(--r50);color:var(--r600)}.pb-md{background:var(--a50);color:var(--a600)}.pb-lo{background:var(--g50);color:var(--g500)}
+
+/* ─── CANOPY BOX ─── */
+.canopy-box{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-xl);padding:22px;margin-bottom:24px}
+.cnp-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.cnp-hdr h3{font-size:15px;font-weight:700;color:var(--gray900)}
+.cnp-hdr span{font-size:12px;color:var(--gray400);margin-left:auto}
+.ctrl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:16px}
+.ctrl-lbl{font-size:12px;color:var(--gray500);display:flex;justify-content:space-between;margin-bottom:5px}
+.ctrl-lbl span{font-weight:700;color:var(--gray900)}
+input[type=range]{width:100%;accent-color:var(--g400);cursor:pointer}
+.ai-decision{margin-top:16px;background:linear-gradient(90deg,var(--g50),var(--b50));border:1.5px solid var(--g100);border-radius:var(--r-md);padding:13px 17px;display:flex;align-items:center;gap:10px;font-size:13.5px}
+.ai-decision i{font-size:20px;color:var(--g500);animation:pulse 2s ease infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.ai-decision .ai-lbl{color:var(--gray400);margin-right:4px}
+.ai-decision .ai-msg{font-weight:600;color:var(--g800)}
+
+/* ─── TIPS ─── */
+.tip-card{background:linear-gradient(135deg,var(--g50),var(--y50));border:1.5px solid var(--g100);border-radius:var(--r-xl);padding:22px;margin-bottom:24px;position:relative;overflow:hidden}
+.tip-card::after{content:'💡';position:absolute;right:20px;top:16px;font-size:30px;opacity:.15}
+.tip-lbl{font-size:11px;font-weight:700;color:var(--g500);letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px}
+.tip-text{font-size:14.5px;color:var(--gray600);font-weight:500;line-height:1.65}
+.tip-dots{display:flex;gap:6px;margin-top:14px}
+.tip-dot{width:8px;height:8px;border-radius:50%;background:var(--gray300);border:none;padding:0;cursor:pointer;transition:all var(--tr)}
+.tip-dot.on{background:var(--g400);width:20px;border-radius:4px}
+
+/* ─── ACHIEVEMENTS ─── */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-bottom:24px}
+.ach-card{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-lg);padding:18px;text-align:center;transition:all var(--tr);position:relative;overflow:hidden}
+.ach-card:hover{transform:translateY(-4px);box-shadow:var(--sh-md)}
+.ach-card.earned{border-color:var(--g100)}
+.ach-card.earned::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g400),var(--y400))}
+.ach-card.locked{opacity:.45;filter:grayscale(.7)}
+.ach-icon{font-size:34px;margin-bottom:8px}
+.ach-name{font-size:12px;font-weight:700;color:var(--gray900);margin-bottom:3px}
+.ach-desc{font-size:11px;color:var(--gray400)}
+
+/* ─── PROGRESS ─── */
+.prog-item{margin-bottom:15px}
+.prog-hdr{display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px}
+.prog-hdr span:first-child{font-weight:600;color:var(--gray800)}
+.prog-hdr span:last-child{color:var(--gray400)}
+.prog-bg{height:8px;background:var(--gray200);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g400),var(--g200));border-radius:4px;width:0;transition:width 1.6s cubic-bezier(.4,0,.2,1)}
+
+/* ─── DISEASE ─── */
+.upload-zone{border:2.5px dashed var(--gray300);border-radius:var(--r-xl);padding:46px;text-align:center;cursor:pointer;background:var(--white);transition:all var(--tr);margin-bottom:24px}
+.upload-zone:hover{border-color:var(--g400);background:var(--g50)}
+.upload-zone i{font-size:46px;color:var(--gray400);margin-bottom:12px;display:block}
+.uz-title{font-size:15px;font-weight:700;color:var(--gray900);margin-bottom:5px}
+.d-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--gray100)}
+.d-row:last-child{border-bottom:none}
+.d-name{font-size:14px;font-weight:600;color:var(--gray900)}
+.d-sub{font-size:12px;color:var(--gray400);margin-top:3px}
+.conf-col{text-align:right}
+.conf-pct{font-size:14px;font-weight:700;margin-bottom:5px}
+.conf-bg{width:90px;height:6px;background:var(--gray200);border-radius:3px;overflow:hidden}
+.conf-fill{height:100%;border-radius:3px}
+.cf-r{background:linear-gradient(90deg,var(--r400),#FF6B6B)}
+.cf-a{background:linear-gradient(90deg,var(--a400),var(--y400))}
+.cf-g{background:linear-gradient(90deg,var(--g400),var(--g200))}
+
+/* ─── IRRIGATION ─── */
+.zone-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.zone-card{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-xl);padding:18px;transition:all var(--tr)}
+.zone-card:hover{box-shadow:var(--sh-sm)}
+.zone-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.zone-name{font-size:14px;font-weight:700;color:var(--gray900);display:flex;align-items:center;gap:7px}
+.zdot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.zdot-g{background:var(--g400)}.zdot-r{background:var(--r400)}.zdot-a{background:var(--a400)}
+.ztoggle{width:44px;height:24px;border-radius:12px;position:relative;transition:background var(--tr);border:none;cursor:pointer}
+.ztoggle.on{background:linear-gradient(90deg,var(--g400),var(--g300))}
+.ztoggle.off{background:var(--gray300)}
+.ztoggle::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:2px;transition:left var(--tr);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.ztoggle.on::after{left:22px}.ztoggle.off::after{left:2px}
+.z-row{display:flex;justify-content:space-between;font-size:13px;color:var(--gray400);padding:3px 0}
+.z-row span:last-child{font-weight:600;color:var(--gray800)}
+.z-bar{width:100%;height:5px;background:var(--gray200);border-radius:3px;overflow:hidden;margin-top:10px}
+.z-fill{height:100%;background:linear-gradient(90deg,var(--b400),var(--b100));border-radius:3px}
+.irrig-ai{background:linear-gradient(90deg,var(--g50),var(--b50));border:1.5px solid var(--g100);border-radius:var(--r-lg);padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.irrig-ai i{font-size:21px;color:var(--g500);flex-shrink:0}
+.iai-t{font-size:13.5px;font-weight:700;color:var(--g800)}
+.iai-s{font-size:12px;color:var(--g600);margin-top:2px}
+
+/* ─── MARKETPLACE ─── */
+.ai-mkt-bar{background:linear-gradient(90deg,var(--p50),var(--b50));border:1.5px solid rgba(139,124,246,.2);border-radius:var(--r-lg);padding:13px 17px;display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.ai-mkt-bar i{font-size:19px;color:var(--p600)}
+.ai-mkt-bar p{font-size:13.5px;color:#3B2F7E}
+.cat-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:20px;scrollbar-width:none}
+.cat-row::-webkit-scrollbar{display:none}
+.cat-chip{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-full);padding:7px 16px;font-size:13px;color:var(--gray500);white-space:nowrap;transition:all var(--tr)}
+.cat-chip:hover{border-color:var(--g400);color:var(--g600)}
+.cat-chip.active{background:linear-gradient(135deg,var(--g400),var(--g600));color:#fff;border-color:transparent;font-weight:600}
+.mkt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.mkt-card{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-xl);padding:16px;transition:all var(--tr)}
+.mkt-card:hover{transform:translateY(-4px);box-shadow:var(--sh-md);border-color:var(--g200)}
+.mkt-img{width:100%;height:92px;background:var(--gray100);border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;margin-bottom:13px;transition:all var(--tr);font-size:36px}
+.mkt-card:hover .mkt-img{background:var(--g50)}
+.mkt-name{font-size:13.5px;font-weight:700;color:var(--gray900);margin-bottom:3px;line-height:1.35}
+.mkt-sub{font-size:11.5px;color:var(--gray400);margin-bottom:10px}
+.mkt-price{font-family:var(--font-d);font-size:19px;font-weight:800;color:var(--g500)}
+.mkt-buy{width:100%;background:var(--g50);color:var(--g700);border:1.5px solid var(--g100);padding:9px 0;border-radius:var(--r-md);font-size:12.5px;font-weight:700;margin-top:10px;transition:all var(--tr)}
+.mkt-buy:hover{background:linear-gradient(135deg,var(--g400),var(--g600));color:#fff;border-color:transparent;transform:translateY(-1px)}
+.ai-badge{background:linear-gradient(135deg,var(--p400),var(--p600));color:#fff;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:var(--r-sm);margin-left:5px;vertical-align:middle}
+
+/* ─── 3D TOUR ─── */
+.tour-wrap{background:linear-gradient(160deg,#06402F,#0A1B2A,#1A1600);border-radius:var(--r-2xl);overflow:hidden;position:relative;margin-bottom:24px}
+.tour-svg-wrap{width:100%;position:relative}
+.hs-dot{cursor:pointer;transition:all .2s;filter:drop-shadow(0 0 6px rgba(34,176,125,.7))}
+.hs-dot:hover{filter:drop-shadow(0 0 12px rgba(255,202,40,.9))}
+.hs-tooltip-box{position:absolute;background:rgba(0,0,0,.88);color:#fff;padding:8px 14px;border-radius:var(--r-md);font-size:12.5px;font-weight:600;pointer-events:none;display:none;border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(8px);z-index:10;white-space:nowrap;transform:translate(-50%,-120%)}
+.tour-cmp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:24px}
+.tour-cmp{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-lg);padding:16px;text-align:center;transition:all var(--tr)}
+.tour-cmp:hover{transform:translateY(-3px);box-shadow:var(--sh-sm);border-color:var(--g100)}
+.tour-cmp .tc-icon{font-size:30px;margin-bottom:8px}
+.tour-cmp h4{font-size:13.5px;font-weight:700;color:var(--gray900);margin-bottom:5px}
+.tour-cmp p{font-size:12px;color:var(--gray400);line-height:1.6}
+
+/* ─── COMMUNITY ─── */
+.trending-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.trend-tag{display:inline-flex;align-items:center;gap:5px;background:var(--y50);color:var(--y600);font-size:12px;font-weight:700;padding:5px 13px;border-radius:var(--r-full);border:1.5px solid var(--y100);cursor:pointer;transition:all var(--tr)}
+.trend-tag:hover{background:var(--y400);color:#333;border-color:var(--y400)}
+.new-post-box{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-xl);padding:20px;margin-bottom:22px}
+.np-input{width:100%;padding:12px 14px;border:1.5px solid var(--gray200);border-radius:var(--r-md);font-size:14px;resize:vertical;min-height:84px;color:var(--gray900);background:var(--gray50);transition:border-color var(--tr)}
+.np-input:focus{border-color:var(--g400);background:var(--white)}
+.np-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:8px}
+.tag-chips{display:flex;gap:7px;flex-wrap:wrap}
+.tag-chip{background:var(--gray100);color:var(--gray500);border:1.5px solid var(--gray200);border-radius:var(--r-full);padding:5px 12px;font-size:12px;cursor:pointer;transition:all var(--tr)}
+.tag-chip.active{background:var(--g50);color:var(--g600);border-color:var(--g200)}
+.tag-chip:hover{border-color:var(--g400);color:var(--g500)}
+.forum-card{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-xl);padding:20px;margin-bottom:13px;transition:all var(--tr)}
+.forum-card:hover{border-color:var(--g200);box-shadow:var(--sh-sm)}
+.fc-hdr{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.fc-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--g400),var(--b400));display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;font-weight:800;flex-shrink:0}
+.fc-author{font-size:13.5px;font-weight:700;color:var(--gray900)}
+.fc-time{font-size:11.5px;color:var(--gray400);margin-top:2px}
+.fc-body{font-size:14px;color:var(--gray600);line-height:1.65;margin-bottom:12px}
+.fc-tag{display:inline-block;background:var(--g50);color:var(--g500);font-size:11px;font-weight:600;padding:3px 10px;border-radius:var(--r-full);margin-right:5px;margin-bottom:5px;border:1px solid var(--g100)}
+.fc-actions{display:flex;gap:16px;padding-top:12px;border-top:1px solid var(--gray100)}
+.fc-act{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--gray400);background:none;border:none;transition:all var(--tr);padding:5px 8px;border-radius:var(--r-sm);cursor:pointer}
+.fc-act:hover{background:var(--g50);color:var(--g500)}
+.fc-act.liked{color:var(--r400)}
+.story-card{background:linear-gradient(135deg,var(--g50),var(--b50));border:1.5px solid var(--g100);border-radius:var(--r-xl);padding:20px;margin-bottom:13px}
+.story-name{font-size:16px;font-weight:800;color:var(--g800);margin-bottom:4px}
+.story-loc{font-size:12px;color:var(--gray400);margin-bottom:10px}
+.story-body{font-size:13.5px;color:var(--gray600);line-height:1.7}
+.story-stat{display:inline-flex;align-items:center;gap:5px;background:var(--g50);border:1px solid var(--g100);border-radius:var(--r-full);padding:4px 12px;font-size:12px;font-weight:700;color:var(--g500);margin-right:7px;margin-top:10px}
+
+/* ─── PLANTBOT ─── */
+.bot-fab{position:fixed;bottom:28px;right:28px;width:58px;height:58px;background:linear-gradient(135deg,var(--g400),var(--g700));border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;box-shadow:0 6px 24px rgba(22,176,125,.5);z-index:1000;cursor:pointer;transition:all var(--tr-s)}
+.bot-fab:hover{transform:scale(1.1) rotate(-5deg);box-shadow:0 12px 32px rgba(22,176,125,.6)}
+.bot-fab.open{background:linear-gradient(135deg,var(--r400),var(--r600));transform:rotate(45deg)}
+.bot-fab.open:hover{transform:rotate(45deg) scale(1.1)}
+.chat-box{position:fixed;bottom:100px;right:28px;width:350px;max-height:540px;background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-2xl);box-shadow:var(--sh-xl);z-index:999;display:none;flex-direction:column;overflow:hidden}
+.chat-box.open{display:flex;animation:bounceIn .3s ease}
+.chat-hdr{background:linear-gradient(135deg,var(--g600),var(--g800));padding:16px 18px;display:flex;align-items:center;gap:12px}
+.bot-av{width:40px;height:40px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.bot-name{font-size:15px;font-weight:700;color:#fff}
+.bot-status{font-size:11.5px;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:4px;margin-top:2px}
+.bot-online{width:7px;height:7px;background:#7DFFC2;border-radius:50%;display:inline-block;animation:pulse 1.5s ease infinite}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;max-height:340px;min-height:0}
+.chat-msg{max-width:84%;padding:10px 14px;border-radius:var(--r-lg);font-size:13.5px;line-height:1.55;animation:fadeIn .2s ease}
+.chat-msg.bot{background:var(--gray100);color:var(--gray900);align-self:flex-start;border-bottom-left-radius:4px}
+.chat-msg.user{background:linear-gradient(135deg,var(--g400),var(--g600));color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.typing{display:flex;gap:4px;padding:12px 14px;align-self:flex-start}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--gray400);animation:typeBounce .8s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes typeBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.chat-quick{padding:8px 14px 4px;display:flex;gap:6px;flex-wrap:wrap}
+.cq-btn{background:var(--g50);color:var(--g600);border:1px solid var(--g100);border-radius:var(--r-full);padding:5px 12px;font-size:11.5px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.cq-btn:hover{background:var(--g400);color:#fff;border-color:transparent}
+.chat-input-row{padding:12px;border-top:1.5px solid var(--gray100);display:flex;gap:8px;background:var(--gray50)}
+.chat-input{flex:1;padding:9px 13px;border:1.5px solid var(--gray200);border-radius:var(--r-md);font-size:13.5px;background:var(--white);color:var(--gray900)}
+.chat-input:focus{border-color:var(--g400)}
+.chat-send{width:38px;height:38px;background:linear-gradient(135deg,var(--g400),var(--g600));border:none;border-radius:var(--r-md);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr);flex-shrink:0}
+.chat-send:hover{transform:scale(1.08)}
+
+/* ─── MODALS ─── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(5px);padding:16px}
+.overlay.open{display:flex}
+.modal-box{background:var(--white);border-radius:var(--r-2xl);padding:36px;width:420px;max-width:100%;box-shadow:var(--sh-xl);position:relative;animation:bounceIn .3s ease;border:1.5px solid var(--gray200)}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--gray100);border:none;width:33px;height:33px;border-radius:50%;font-size:16px;color:var(--gray500);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.modal-close:hover{background:var(--r50);color:var(--r600)}
+.modal-logo-wrap{text-align:center;margin-bottom:22px}
+.modal-logo-mark{width:54px;height:54px;background:linear-gradient(135deg,var(--g400),var(--g700));border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;box-shadow:0 4px 16px rgba(22,176,125,.3)}
+.modal-logo-mark i{font-size:27px;color:#fff}
+.modal-brand{font-family:var(--font-d);font-size:20px;font-weight:800;color:var(--g600)}
+.modal-tabs-bar{display:flex;background:var(--gray100);border-radius:var(--r-md);padding:4px;gap:4px;margin-bottom:24px}
+.modal-tab-btn{flex:1;padding:9px;font-size:14px;font-weight:600;border:none;background:none;border-radius:var(--r-sm);color:var(--gray400);cursor:pointer;transition:all var(--tr)}
+.modal-tab-btn.active{background:var(--white);color:var(--gray900);box-shadow:var(--sh-xs)}
+.form-group{margin-bottom:16px}
+.form-label{font-size:13px;font-weight:600;color:var(--gray700);display:block;margin-bottom:6px}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--gray200);border-radius:var(--r-md);font-size:14px;background:var(--gray50);color:var(--gray900);transition:border-color var(--tr)}
+.form-input:focus{border-color:var(--g400);background:var(--white)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-submit{width:100%;padding:13px;border-radius:var(--r-md);font-size:15px;font-weight:700;margin-top:6px;background:linear-gradient(135deg,var(--g400),var(--g700));color:#fff;border:none;cursor:pointer;transition:all var(--tr-s);box-shadow:0 4px 16px rgba(22,176,125,.3)}
+.form-submit:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(22,176,125,.4)}
+.form-divider{text-align:center;font-size:12.5px;color:var(--gray400);margin:14px 0;position:relative}
+.form-divider::before,.form-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--gray200)}
+.form-divider::before{left:0}.form-divider::after{right:0}
+.pfp-upload{border:2px dashed var(--gray300);border-radius:var(--r-lg);padding:20px;text-align:center;cursor:pointer;transition:all var(--tr);margin-bottom:16px}
+.pfp-upload:hover{border-color:var(--g400);background:var(--g50)}
+.pfp-upload i{font-size:30px;color:var(--gray400);margin-bottom:6px;display:block}
+.pfp-upload p{font-size:12.5px;color:var(--gray400)}
+.pfp-preview{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--g400),var(--b400));display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:30px;color:#fff;font-weight:800}
+
+/* ─── CART PANEL ─── */
+.cart-panel{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:var(--white);border-left:1.5px solid var(--gray200);box-shadow:var(--sh-xl);z-index:600;display:flex;flex-direction:column;transition:right .35s cubic-bezier(.4,0,.2,1)}
+.cart-panel.open{right:0}
+.cart-hdr{padding:20px 22px;border-bottom:1.5px solid var(--gray200);display:flex;align-items:center;justify-content:space-between}
+.cart-hdr h2{font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--gray900)}
+.cart-body{flex:1;overflow-y:auto;padding:16px 22px}
+.cart-empty{text-align:center;padding:60px 20px;color:var(--gray400)}
+.cart-empty i{font-size:56px;margin-bottom:14px;display:block}
+.cart-empty p{font-size:15px;font-weight:500}
+.cart-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--gray100)}
+.ci-icon{width:52px;height:52px;background:var(--g50);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.ci-name{font-size:13.5px;font-weight:700;color:var(--gray900);margin-bottom:2px}
+.ci-price{font-size:13px;font-weight:700;color:var(--g500)}
+.ci-qty{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty-btn{width:26px;height:26px;border-radius:var(--r-sm);background:var(--gray100);border:none;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.qty-btn:hover{background:var(--g50);color:var(--g600)}
+.qty-num{font-size:13px;font-weight:700;color:var(--gray900);min-width:20px;text-align:center}
+.ci-remove{margin-left:auto;background:none;border:none;color:var(--gray400);cursor:pointer;font-size:17px;transition:color var(--tr);padding:4px}
+.ci-remove:hover{color:var(--r400)}
+.cart-footer{padding:18px 22px;border-top:1.5px solid var(--gray200)}
+.cart-total-row{display:flex;justify-content:space-between;margin-bottom:6px;font-size:13.5px;color:var(--gray500)}
+.cart-total-row.grand{font-size:16px;font-weight:800;color:var(--gray900);margin-top:10px;padding-top:10px;border-top:1.5px solid var(--gray200)}
+.cart-checkout-btn{width:100%;margin-top:14px}
+
+/* ─── PAYMENT ─── */
+.payment-box{background:var(--white);border-radius:var(--r-2xl);padding:32px;width:520px;max-width:100%;box-shadow:var(--sh-xl);position:relative;animation:bounceIn .3s ease;border:1.5px solid var(--gray200);max-height:90vh;overflow-y:auto}
+.pay-steps{display:flex;gap:0;margin-bottom:28px;border-bottom:2px solid var(--gray200);padding-bottom:16px}
+.pay-step{flex:1;text-align:center;font-size:12px;font-weight:600;color:var(--gray400);position:relative}
+.pay-step::before{content:attr(data-n);width:28px;height:28px;border-radius:50%;background:var(--gray200);color:var(--gray500);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin:0 auto 6px}
+.pay-step.done::before{background:var(--g400);color:#fff}
+.pay-step.active::before{background:linear-gradient(135deg,var(--g400),var(--g600));color:#fff;box-shadow:0 0 0 4px var(--g50)}
+.pay-step.active{color:var(--g600)}
+.pay-step.done{color:var(--g400)}
+.card-icons{display:flex;gap:8px;margin-bottom:16px}
+.card-icon{width:48px;height:30px;background:var(--gray100);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--gray600);border:1px solid var(--gray200)}
+.pay-success{text-align:center;padding:20px 0}
+.pay-success-icon{font-size:60px;margin-bottom:16px;animation:bounceIn .5s ease}
+.pay-success h3{font-family:var(--font-d);font-size:22px;font-weight:800;color:var(--gray900);margin-bottom:8px}
+.pay-success p{font-size:14px;color:var(--gray500);line-height:1.7}
+.order-num{font-size:13px;background:var(--g50);color:var(--g600);padding:8px 18px;border-radius:var(--r-full);display:inline-block;margin:12px 0;font-weight:700;border:1px solid var(--g100)}
+
+/* ─── WELCOME POPUP ─── */
+.welcome-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:700;align-items:center;justify-content:center;backdrop-filter:blur(8px);padding:16px}
+.welcome-overlay.open{display:flex}
+.welcome-box{background:var(--white);border-radius:var(--r-2xl);padding:40px 36px;max-width:460px;width:100%;text-align:center;box-shadow:var(--sh-xl);border:1.5px solid var(--gray200);animation:bounceIn .4s cubic-bezier(.34,1.56,.64,1)}
+.welcome-mascot{font-size:68px;animation:mascotBob 2s ease-in-out infinite;display:block;margin-bottom:18px}
+.welcome-box h2{font-family:var(--font-d);font-size:26px;font-weight:800;color:var(--gray900);margin-bottom:12px}
+.welcome-box p{font-size:15px;color:var(--gray500);line-height:1.75;margin-bottom:26px}
+.welcome-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.welcome-skip{font-size:13px;color:var(--gray400);margin-top:14px;background:none;border:none;cursor:pointer;transition:color var(--tr)}
+.welcome-skip:hover{color:var(--gray600)}
+
+/* ─── CHART ─── */
+.chart-card{background:var(--white);border:1.5px solid var(--gray200);border-radius:var(--r-xl);padding:22px;margin-bottom:16px;transition:box-shadow var(--tr)}
+.chart-card:hover{box-shadow:var(--sh-sm)}
+.chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.chart-title{font-size:14px;font-weight:700;color:var(--gray900)}
+.chart-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--gray400)}
+.ldot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:middle}
+
+/* ─── FOOTER ─── */
+.site-footer{background:var(--white);border-top:1.5px solid var(--gray200);padding:22px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.site-footer p{font-size:12.5px;color:var(--gray400)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:12.5px;color:var(--gray400);transition:color var(--tr)}
+.footer-links a:hover{color:var(--g500)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:800px){
+  .sidebar{display:none}.nav-links{display:none}
+  .hero-inner{flex-direction:column;padding:36px 24px}
+  .hero-visual{display:none}.hero-h1{font-size:30px}
+  .zone-grid{grid-template-columns:1fr}.page{padding:16px}
+  .chat-box{width:calc(100vw - 20px);right:10px;bottom:88px}
+  .cart-panel{width:100%;right:-100%}
+}
+</style>
+</head>
+<body>
+
+<!-- WELCOME POPUP -->
+<div class="welcome-overlay open" id="welcomeOverlay">
+  <div class="welcome-box">
+    <span class="welcome-mascot">🤖</span>
+    <h2>Welcome to Plant Cloud™!</h2>
+    <p>Hey farmer! 👋 I'm <strong>PlantBot</strong>, your AI-powered agriculture guide. Plant Cloud™ uses sensors, AI and a self-watering canopy to make your farm smarter, greener and more productive!</p>
+    <div class="welcome-btns">
+      <button class="btn btn-yellow" onclick="closeWelcome();showPage('tour')"><i class="ti ti-map-pin"></i> Take a quick tour</button>
+      <button class="btn btn-primary" onclick="closeWelcome()"><i class="ti ti-rocket"></i> Explore now</button>
+    </div>
+    <button class="welcome-skip" onclick="closeWelcome()">Skip for now</button>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="overlay" id="authOverlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeAuth()"><i class="ti ti-x"></i></button>
+    <div class="modal-logo-wrap">
+      <div class="modal-logo-mark"><i class="ti ti-plant-2"></i></div>
+      <div class="modal-brand">Plant Cloud™</div>
+    </div>
+    <div class="modal-tabs-bar">
+      <button class="modal-tab-btn active" id="tabLogin" onclick="authTab('login')">Log in</button>
+      <button class="modal-tab-btn" id="tabReg" onclick="authTab('register')">Register</button>
+    </div>
+    <div id="formLogin">
+      <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" placeholder="you@farm.com"></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••"></div>
+      <button class="form-submit" onclick="doLogin()"><i class="ti ti-login"></i> Log in to dashboard</button>
+      <div class="form-divider">or continue with</div>
+      <div style="display:flex;gap:10px">
+        <button style="flex:1;padding:10px;border:1.5px solid var(--gray200);border-radius:var(--r-md);background:var(--gray50);font-size:13px;cursor:pointer;font-family:var(--font-b);transition:all .2s" onmouseover="this.style.background='var(--g50)'" onmouseout="this.style.background='var(--gray50)'">🌐 Google</button>
+        <button style="flex:1;padding:10px;border:1.5px solid var(--gray200);border-radius:var(--r-md);background:var(--gray50);font-size:13px;cursor:pointer;font-family:var(--font-b);transition:all .2s" onmouseover="this.style.background='var(--g50)'" onmouseout="this.style.background='var(--gray50)'">📱 Phone</button>
+      </div>
+    </div>
+    <div id="formReg" class="hidden">
+      <div class="pfp-upload" onclick="triggerPfp()" id="pfpArea">
+        <i class="ti ti-camera-plus"></i>
+        <p>Tap to upload profile picture</p>
+      </div>
+      <input type="file" id="pfpInput" accept="image/*" class="hidden" onchange="previewPfp(this)">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First name</label><input class="form-input" type="text" placeholder="Ravi"></div>
+        <div class="form-group"><label class="form-label">Last name</label><input class="form-input" type="text" placeholder="Sharma"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" placeholder="you@farm.com"></div>
+      <div class="form-group"><label class="form-label">Farm location</label><input class="form-input" type="text" placeholder="e.g. Kochi, Kerala"></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="Min 8 characters"></div>
+      <button class="form-submit" onclick="doLogin()"><i class="ti ti-rocket"></i> Create farmer account</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="overlay" id="payOverlay">
+  <div class="payment-box">
+    <button class="modal-close" onclick="closePay()"><i class="ti ti-x"></i></button>
+    <div id="payStep1">
+      <h2 style="font-family:var(--font-d);font-size:20px;font-weight:800;color:var(--gray900);margin-bottom:6px">Secure Checkout</h2>
+      <p style="font-size:13px;color:var(--gray400);margin-bottom:20px">Plant Cloud™ · SSL encrypted payment</p>
+      <div class="pay-steps">
+        <div class="pay-step active" data-n="1">Delivery</div>
+        <div class="pay-step" data-n="2">Payment</div>
+        <div class="pay-step" data-n="3">Confirm</div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First name</label><input class="form-input" type="text" placeholder="Ravi" value="Ravi"></div>
+        <div class="form-group"><label class="form-label">Last name</label><input class="form-input" type="text" placeholder="Sharma" value="Sharma"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Address</label><input class="form-input" type="text" placeholder="Street address" value="42, Farm Road"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">City</label><input class="form-input" type="text" placeholder="Kochi" value="Kochi"></div>
+        <div class="form-group"><label class="form-label">PIN code</label><input class="form-input" type="text" placeholder="682001" value="682001"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Phone number</label><input class="form-input" type="tel" placeholder="+91 98765 43210"></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:13px" onclick="payNext()"><i class="ti ti-arrow-right"></i> Continue to payment</button>
+    </div>
+    <div id="payStep2" class="hidden">
+      <h2 style="font-family:var(--font-d);font-size:20px;font-weight:800;color:var(--gray900);margin-bottom:6px">Payment details</h2>
+      <p style="font-size:13px;color:var(--gray400);margin-bottom:20px">All transactions are secured and encrypted</p>
+      <div class="pay-steps">
+        <div class="pay-step done" data-n="✓">Delivery</div>
+        <div class="pay-step active" data-n="2">Payment</div>
+        <div class="pay-step" data-n="3">Confirm</div>
+      </div>
+      <div class="card-icons">
+        <div class="card-icon">VISA</div>
+        <div class="card-icon">MC</div>
+        <div class="card-icon">RuPay</div>
+        <div class="card-icon">UPI</div>
+      </div>
+      <div class="form-group"><label class="form-label">Card number</label><input class="form-input" type="text" placeholder="4242 4242 4242 4242" maxlength="19" oninput="fmtCard(this)"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Expiry</label><input class="form-input" type="text" placeholder="MM/YY" maxlength="5" oninput="fmtExpiry(this)"></div>
+        <div class="form-group"><label class="form-label">CVV</label><input class="form-input" type="password" placeholder="•••" maxlength="3"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Name on card</label><input class="form-input" type="text" placeholder="RAVI SHARMA"></div>
+      <div id="pay-order-summary" style="background:var(--gray50);border-radius:var(--r-lg);padding:14px;margin-bottom:16px;border:1.5px solid var(--gray200)"></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-outline" onclick="payBack()"><i class="ti ti-arrow-left"></i> Back</button>
+        <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="payConfirm()"><i class="ti ti-lock"></i> Pay ₹<span id="pay-total-btn">0</span></button>
+      </div>
+    </div>
+    <div id="payStep3" class="hidden">
+      <div class="pay-success">
+        <div class="pay-success-icon">🎉</div>
+        <h3>Order Confirmed!</h3>
+        <p>Your Plant Cloud™ order has been placed successfully. You'll receive a confirmation email shortly.</p>
+        <div class="order-num">Order #PC-2025-<span id="ord-num">8847</span></div>
+        <p style="font-size:13px;color:var(--gray400);margin-top:8px">Estimated delivery: 3–5 business days</p>
+        <button class="btn btn-primary" style="margin-top:20px" onclick="closePay();clearCart()"><i class="ti ti-home"></i> Back to home</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CART PANEL -->
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-hdr">
+    <h2><i class="ti ti-shopping-bag" style="color:var(--g400)"></i> Your cart</h2>
+    <button class="btn btn-icon-only btn-outline" onclick="toggleCart()" style="border-color:var(--gray200);color:var(--gray500)"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty" id="cartEmpty"><i class="ti ti-shopping-bag"></i><p>Your cart is empty</p><p style="font-size:13px;margin-top:4px;color:var(--gray300)">Add products from the marketplace</p></div>
+    <div id="cartItems"></div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total-row"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
+    <div class="cart-total-row"><span>Delivery</span><span>₹99</span></div>
+    <div class="cart-total-row"><span>GST (18%)</span><span id="cartGST">₹0</span></div>
+    <div class="cart-total-row grand"><span>Total</span><span id="cartTotal">₹0</span></div>
+    <button class="btn btn-primary cart-checkout-btn" onclick="openPay()"><i class="ti ti-credit-card"></i> Proceed to checkout</button>
+  </div>
+</div>
+
+<!-- PLANTBOT -->
+<button class="bot-fab" id="botFab" onclick="toggleBot()" title="Ask PlantBot">🌱</button>
+<div class="chat-box" id="chatBox">
+  <div class="chat-hdr">
+    <div class="bot-av">🤖</div>
+    <div>
+      <div class="bot-name">PlantBot</div>
+      <div class="bot-status"><span class="bot-online"></span> AI Assistant · Online</div>
+    </div>
+  </div>
+  <div class="chat-msgs" id="chatMsgs">
+    <div class="chat-msg bot">Hey! 🌱 I'm <strong>PlantBot</strong>. Ask me anything or tap a page below to navigate!</div>
+    <div style="margin-top:8px;background:#f0fdf8;border:1.5px solid #c3f5de;border-radius:12px;overflow:hidden">
+      <div style="font-size:10px;color:#0f7a5a;font-weight:700;padding:7px 12px 3px;letter-spacing:.05em;text-transform:uppercase">📍 Go to a page</div>
+      <button onclick="showPage('dashboard');toggleBot()" style="display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;background:none;border:none;border-top:1px solid #c3f5de;font-size:12px;font-weight:600;color:#0f7a5a;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s" onmouseover="this.style.background='#22b07d';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#0f7a5a'">📊 Live Dashboard</button>
+      <button onclick="showPage('disease');toggleBot()" style="display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;background:none;border:none;border-top:1px solid #c3f5de;font-size:12px;font-weight:600;color:#0f7a5a;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s" onmouseover="this.style.background='#22b07d';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#0f7a5a'">🔬 Disease AI Detection</button>
+      <button onclick="showPage('irrigation');toggleBot()" style="display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;background:none;border:none;border-top:1px solid #c3f5de;font-size:12px;font-weight:600;color:#0f7a5a;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s" onmouseover="this.style.background='#22b07d';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#0f7a5a'">💧 Irrigation Control</button>
+      <button onclick="showPage('tour');toggleBot()" style="display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;background:none;border:none;border-top:1px solid #c3f5de;font-size:12px;font-weight:600;color:#0f7a5a;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s" onmouseover="this.style.background='#22b07d';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#0f7a5a'">🏡 3D Virtual Tour</button>
+      <button onclick="showPage('market');toggleBot()" style="display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;background:none;border:none;border-top:1px solid #c3f5de;font-size:12px;font-weight:600;color:#0f7a5a;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s" onmouseover="this.style.background='#22b07d';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#0f7a5a'">🛒 Marketplace</button>
+      <button onclick="showPage('community');toggleBot()" style="display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;background:none;border:none;border-top:1px solid #c3f5de;font-size:12px;font-weight:600;color:#0f7a5a;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s" onmouseover="this.style.background='#22b07d';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#0f7a5a'">👨‍🌾 Community Forum</button>
+      <button onclick="showPage('achievements');toggleBot()" style="display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;background:none;border:none;border-top:1px solid #c3f5de;font-size:12px;font-weight:600;color:#0f7a5a;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s" onmouseover="this.style.background='#22b07d';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#0f7a5a'">🏆 Achievements</button>
+      <button onclick="showPage('home');toggleBot()" style="display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;background:none;border:none;border-top:1px solid #c3f5de;font-size:12px;font-weight:600;color:#0f7a5a;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s" onmouseover="this.style.background='#22b07d';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#0f7a5a'">🏠 Home</button>
+    </div>
+  </div>
+  <div class="chat-quick">
+    <button class="cq-btn" onclick="quickSend('How do I fix soil pH?')">Soil pH</button>
+    <button class="cq-btn" onclick="quickSend('Best crops for Kerala?')">Crops</button>
+    <button class="cq-btn" onclick="quickSend('How does Plant Cloud work?')">Setup</button>
+    <button class="cq-btn" onclick="quickSend('Tomato disease help')">Disease</button>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" placeholder="Ask PlantBot anything…" onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()"><i class="ti ti-send"></i></button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <div class="nav-logo"><div class="logo-mark"><i class="ti ti-plant-2"></i></div>Plant Cloud<span class="logo-sup">™</span></div>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-link active" data-page="home" onclick="showPage('home',this)">🏠 Home</button>
+    <button class="nav-link" data-page="dashboard" onclick="showPage('dashboard',this)">📊 Dashboard</button>
+    <button class="nav-link" data-page="disease" onclick="showPage('disease',this)">🔬 Disease AI</button>
+    <button class="nav-link" data-page="irrigation" onclick="showPage('irrigation',this)">💧 Irrigation</button>
+    <button class="nav-link" data-page="tour" onclick="showPage('tour',this)">🏡 3D Tour</button>
+    <button class="nav-link" data-page="community" onclick="showPage('community',this)">👨‍🌾 Community</button>
+    <button class="nav-link" data-page="achievements" onclick="showPage('achievements',this)">🏆 Badges</button>
+    <button class="nav-link" data-page="market" onclick="showPage('market',this)">🛒 Market</button>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-icon-only btn-outline cart-badge-btn" onclick="toggleCart()" title="Cart" style="border-color:var(--gray200);color:var(--gray500)"><i class="ti ti-shopping-bag"></i><span class="cart-num" id="cartNum" style="display:none">0</span></button>
+    <button class="btn btn-icon-only btn-outline" onclick="toggleDark()" id="modeBtn" style="border-color:var(--gray200);color:var(--gray500)"><i class="ti ti-moon" id="modeIcon"></i></button>
+    <div class="user-chip" id="userChip" onclick="openAuth()">
+      <div class="user-avatar-sm" id="userAvatarSm">👤</div>
+      <span id="userChipLabel">Get Started</span>
+    </div>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <aside class="sidebar">
+    <div class="sb-sec">Overview</div>
+    <button class="sb-item active" onclick="showPage('home',null,this)"><i class="ti ti-home"></i> Home</button>
+    <button class="sb-item" onclick="showPage('dashboard',null,this)"><i class="ti ti-chart-line"></i> Live dashboard</button>
+    <div class="sb-sec">Farm tools</div>
+    <button class="sb-item" onclick="showPage('disease',null,this)"><i class="ti ti-microscope"></i> Disease AI</button>
+    <button class="sb-item" onclick="showPage('irrigation',null,this)"><i class="ti ti-droplet"></i> Irrigation</button>
+    <button class="sb-item" onclick="showPage('tour',null,this)"><i class="ti ti-3d-cube-sphere"></i> 3D virtual tour</button>
+    <div class="sb-sec">Community</div>
+    <button class="sb-item" onclick="showPage('community',null,this)"><i class="ti ti-users"></i> Forum <span class="sb-badge">3</span></button>
+    <button class="sb-item" onclick="showPage('market',null,this)"><i class="ti ti-shopping-bag"></i> Marketplace</button>
+    <div class="sb-sec">My farm</div>
+    <button class="sb-item" onclick="showPage('achievements',null,this)"><i class="ti ti-trophy"></i> Achievements</button>
+    <button class="sb-item" onclick="openAuth()"><i class="ti ti-user-circle"></i> My profile</button>
+  </aside>
+
+  <main class="main-area">
+
+    <!-- HOME -->
+    <div id="page-home" class="page active">
+      <!-- HERO -->
+      <div class="hero-section">
+        <div class="hero-bg-blob blob1"></div><div class="hero-bg-blob blob2"></div><div class="hero-bg-blob blob3"></div>
+        <div class="hero-inner">
+          <div class="hero-text">
+            <div class="mascot">🤖</div>
+            <div class="hero-badge"><i class="ti ti-cpu"></i> AI-Powered Smart Agriculture</div>
+            <h1 class="hero-h1">Farming,<br>guided by<br><span class="grad">Plant Cloud™</span></h1>
+            <p class="hero-p">Sensor-driven, AI-guided crop management. Reduce water usage by up to 62%, maximize yield and automate your entire farm from any device.</p>
+            <div class="hero-btns">
+              <button class="btn btn-primary" onclick="showPage('dashboard')"><i class="ti ti-chart-bar"></i> Live dashboard</button>
+              <button class="btn btn-yellow" onclick="showPage('tour')"><i class="ti ti-3d-cube-sphere"></i> 3D tour</button>
+              <button class="btn btn-outline" onclick="showPage('market')"><i class="ti ti-shopping-bag"></i> Shop hardware</button>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat"><div class="sv"><span class="counter" data-t="62">0</span><span class="su">%</span></div><div class="sl">Water saved</div></div>
+              <div class="hero-divider"></div>
+              <div class="hero-stat"><div class="sv"><span class="counter" data-t="34">0</span><span class="su">%</span></div><div class="sl">Yield increase</div></div>
+              <div class="hero-divider"></div>
+              <div class="hero-stat"><div class="sv"><span class="counter" data-t="3842">0</span></div><div class="sl">Active farmers</div></div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-farm-anim">
+              <svg viewBox="0 0 380 280" width="100%" style="display:block">
+                <defs><linearGradient id="hSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C3F5DE"/><stop offset="100%" stop-color="#86E8BC"/></linearGradient><linearGradient id="hGnd" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3DD4A0"/><stop offset="100%" stop-color="#22B07D"/></linearGradient></defs>
+                <rect width="380" height="280" fill="url(#hSky)"/>
+                <rect y="200" width="380" height="80" fill="url(#hGnd)"/>
+                <!-- Canopy -->
+                <rect x="20" y="50" width="340" height="8" fill="#085041" rx="3"/>
+                <rect x="20" y="50" width="5" height="160" fill="#085041" rx="2"/>
+                <rect x="355" y="50" width="5" height="160" fill="#085041" rx="2"/>
+                <rect x="30" y="58" width="46" height="16" fill="#22B07D" rx="3" opacity=".9"/>
+                <rect x="84" y="58" width="46" height="16" fill="#22B07D" rx="3" opacity=".9"/>
+                <rect x="138" y="58" width="46" height="16" fill="#22B07D" rx="3" opacity=".9"/>
+                <rect x="192" y="58" width="46" height="16" fill="#22B07D" rx="3" opacity=".9"/>
+                <rect x="246" y="58" width="46" height="16" fill="#22B07D" rx="3" opacity=".9"/>
+                <rect x="300" y="58" width="46" height="16" fill="#22B07D" rx="3" opacity=".9"/>
+                <!-- Water drops -->
+                <circle cx="53" cy="90" r="2.5" fill="#60BFFF" opacity=".85"><animate attributeName="cy" from="80" to="200" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" from=".85" to="0" dur="2s" repeatCount="indefinite"/></circle>
+                <circle cx="160" cy="85" r="2.5" fill="#60BFFF" opacity=".85"><animate attributeName="cy" from="80" to="200" dur="2.4s" repeatCount="indefinite" begin=".5s"/><animate attributeName="opacity" from=".85" to="0" dur="2.4s" repeatCount="indefinite" begin=".5s"/></circle>
+                <circle cx="270" cy="90" r="2.5" fill="#60BFFF" opacity=".85"><animate attributeName="cy" from="80" to="200" dur="1.9s" repeatCount="indefinite" begin="1s"/><animate attributeName="opacity" from=".85" to="0" dur="1.9s" repeatCount="indefinite" begin="1s"/></circle>
+                <circle cx="325" cy="88" r="2.5" fill="#60BFFF" opacity=".85"><animate attributeName="cy" from="80" to="200" dur="2.2s" repeatCount="indefinite" begin=".3s"/><animate attributeName="opacity" from=".85" to="0" dur="2.2s" repeatCount="indefinite" begin=".3s"/></circle>
+                <!-- Plants -->
+                <line x1="60" y1="200" x2="60" y2="150" stroke="#0F7A5A" stroke-width="2.5"/>
+                <ellipse cx="60" cy="148" rx="12" ry="7" fill="#3DD4A0"/>
+                <line x1="130" y1="200" x2="130" y2="145" stroke="#0F7A5A" stroke-width="2.5"/>
+                <ellipse cx="130" cy="143" rx="13" ry="8" fill="#22B07D"/>
+                <line x1="200" y1="200" x2="200" y2="148" stroke="#0F7A5A" stroke-width="2.5"/>
+                <ellipse cx="200" cy="146" rx="12" ry="7" fill="#3DD4A0"/>
+                <line x1="270" y1="200" x2="270" y2="144" stroke="#0F7A5A" stroke-width="2.5"/>
+                <ellipse cx="270" cy="142" rx="13" ry="8" fill="#22B07D"/>
+                <line x1="330" y1="200" x2="330" y2="149" stroke="#0F7A5A" stroke-width="2.5"/>
+                <ellipse cx="330" cy="147" rx="11" ry="7" fill="#3DD4A0"/>
+                <!-- Sensor dots -->
+                <circle cx="95" cy="185" r="6" fill="#FFCA28" opacity=".9"><animate attributeName="r" from="6" to="9" dur="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" from=".9" to=".4" dur="1.5s" repeatCount="indefinite"/></circle>
+                <circle cx="230" cy="185" r="6" fill="#60BFFF" opacity=".9"><animate attributeName="r" from="6" to="9" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" from=".9" to=".4" dur="1.8s" repeatCount="indefinite"/></circle>
+                <!-- Control display -->
+                <rect x="155" y="120" width="70" height="50" fill="#0A140D" rx="6" stroke="#22B07D" stroke-width="1.5"/>
+                <text x="190" y="134" text-anchor="middle" font-size="6" fill="#22B07D" font-weight="700" font-family="Space Grotesk">PLANT CLOUD™</text>
+                <rect x="162" y="138" width="14" height="12" fill="#22B07D" rx="2" opacity=".8"/>
+                <rect x="180" y="138" width="14" height="12" fill="#60BFFF" rx="2" opacity=".8"/>
+                <rect x="198" y="138" width="14" height="12" fill="#FFCA28" rx="2" opacity=".8"/>
+                <rect x="162" y="154" width="14" height="10" fill="#8B7CF6" rx="2" opacity=".8"/>
+                <rect x="180" y="154" width="14" height="10" fill="#22B07D" rx="2" opacity=".8"/>
+                <rect x="198" y="154" width="28" height="10" fill="#EF5350" rx="2" opacity=".8"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:28px 28px 0">
+        <!-- HOW IT WORKS -->
+        <div class="sec-title"><i class="ti ti-route"></i> How Plant Cloud™ works</div>
+        <div class="steps-grid">
+          <div class="step-card"><div class="step-num">1</div><span class="step-icon">🌡️</span><h4>Sensors collect data</h4><p>Temperature, humidity, soil moisture, pH and light sensors log your farm conditions 24/7.</p></div>
+          <div class="step-card"><div class="step-num">2</div><span class="step-icon">☁️</span><h4>AI analyzes in cloud</h4><p>Our ML model processes sensor readings and identifies patterns, risks and optimal growing conditions.</p></div>
+          <div class="step-card"><div class="step-num">3</div><span class="step-icon">🌿</span><h4>Smart canopy acts</h4><p>The self-watering canopy opens, closes and delivers water recovered from transpiration and humidity.</p></div>
+          <div class="step-card"><div class="step-num">4</div><span class="step-icon">📱</span><h4>You stay in control</h4><p>Get real-time alerts, AI recommendations and full farm control from your phone or any browser.</p></div>
+        </div>
+        <!-- STAT TILES -->
+        <div class="stat-grid">
+          <div class="stat-tile st-b"><div class="st-label"><i class="ti ti-droplets" style="color:var(--b400)"></i> Water saved</div><div class="st-val"><span class="counter" data-t="62">0</span><span class="st-unit">%</span></div><div class="st-delta d-up">↑ 8% this season</div></div>
+          <div class="stat-tile st-g"><div class="st-label"><i class="ti ti-chart-line" style="color:var(--g400)"></i> Yield increase</div><div class="st-val"><span class="counter" data-t="34">0</span><span class="st-unit">%</span></div><div class="st-delta d-up">↑ vs last year</div></div>
+          <div class="stat-tile st-p"><div class="st-label"><i class="ti ti-cloud" style="color:var(--p400)"></i> Water recovered</div><div class="st-val"><span class="counter" data-t="148">0</span><span class="st-unit">L</span></div><div class="st-delta d-up">today</div></div>
+          <div class="stat-tile st-y"><div class="st-label"><i class="ti ti-robot" style="color:var(--y500)"></i> AI decisions</div><div class="st-val"><span class="counter" data-t="1247">0</span></div><div class="st-delta d-up">this month</div></div>
+          <div class="stat-tile st-t"><div class="st-label"><i class="ti ti-plant" style="color:var(--teal400)"></i> Farmers enrolled</div><div class="st-val"><span class="counter" data-t="3842">0</span></div><div class="st-delta d-up">↑ 214 this week</div></div>
+          <div class="stat-tile st-g"><div class="st-label"><i class="ti ti-shield-check" style="color:var(--g400)"></i> System health</div><div class="st-val"><span class="counter" data-t="99">0</span><span class="st-unit">%</span></div><div class="st-delta d-up">All sensors online</div></div>
+        </div>
+        <!-- CANOPY -->
+        <div class="canopy-box">
+          <div class="cnp-hdr"><i class="ti ti-adjustments-horizontal" style="font-size:20px;color:var(--g400)"></i><h3>Interactive canopy system</h3><span>Drag sliders → AI responds in real time</span></div>
+          <svg id="canopySvg" viewBox="0 0 660 220" width="100%" style="border-radius:var(--r-lg);overflow:hidden" aria-label="Interactive canopy diagram">
+            <defs><linearGradient id="cSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8FDF3"/><stop offset="100%" stop-color="#C3F5DE"/></linearGradient><linearGradient id="cGnd" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#86E8BC"/><stop offset="100%" stop-color="#3DD4A0"/></linearGradient></defs>
+            <rect width="660" height="220" fill="url(#cSky)"/>
+            <rect y="168" width="660" height="52" fill="url(#cGnd)"/>
+            <rect x="46" y="22" width="568" height="9" fill="#085041" rx="3"/>
+            <rect x="46" y="22" width="5" height="150" fill="#085041" rx="2"/>
+            <rect x="609" y="22" width="5" height="150" fill="#085041" rx="2"/>
+            <g id="cPanels"></g><g id="cDrops"></g><g id="cPlants"></g>
+            <text x="330" y="16" text-anchor="middle" font-size="10" fill="#085041" font-weight="700" font-family="Space Grotesk,sans-serif">Plant Cloud™ Self-Watering Canopy System</text>
+          </svg>
+          <div class="ctrl-grid">
+            <div><div class="ctrl-lbl">Humidity <span id="lHum">72%</span></div><input type="range" min="20" max="100" value="72" id="rHum" oninput="updateCanopy()"></div>
+            <div><div class="ctrl-lbl">Temperature <span id="lTmp">28°C</span></div><input type="range" min="10" max="45" value="28" id="rTmp" oninput="updateCanopy()"></div>
+            <div><div class="ctrl-lbl">Soil moisture <span id="lSoil">45%</span></div><input type="range" min="0" max="100" value="45" id="rSoil" oninput="updateCanopy()"></div>
+            <div><div class="ctrl-lbl">Light <span id="lLight">650 Lux</span></div><input type="range" min="0" max="1200" value="650" id="rLight" oninput="updateCanopy()"></div>
+          </div>
+          <div class="ai-decision"><i class="ti ti-robot"></i><span class="ai-lbl">AI decision:</span><span class="ai-msg" id="aiMsg">Canopy open at 51% — optimal conditions for transpiration capture</span></div>
+        </div>
+        <!-- WEATHER -->
+        <div class="sec-title"><i class="ti ti-cloud-sun"></i> Weather · Kochi, Kerala</div>
+        <div class="weather-card">
+          <div style="display:flex;align-items:center;gap:16px"><div class="w-icon"><i class="ti ti-sun"></i></div><div><div class="w-temp">30.6°C</div><div class="w-loc"><i class="ti ti-map-pin"></i> Kochi, Kerala · Partly sunny</div></div></div>
+          <div class="w-details">
+            <div><div class="wd-val">54%</div><div class="wd-label">Humidity</div></div>
+            <div><div class="wd-val">12 km/h</div><div class="wd-label">Wind</div></div>
+            <div><div class="wd-val">1012 hPa</div><div class="wd-label">Pressure</div></div>
+            <div><div class="wd-val">8.2 mm</div><div class="wd-label">Rain ahead</div></div>
+            <div><div class="wd-val">UV 7</div><div class="wd-label">UV index</div></div>
+          </div>
+        </div>
+        <!-- AI RECS -->
+        <div class="sec-title"><i class="ti ti-sparkles"></i> AI recommendations</div>
+        <div class="rec-card"><div class="rec-ic ri-a"><i class="ti ti-droplet-off"></i></div><div><div class="rec-title">Reduce irrigation in Zone B</div><div class="rec-desc">Soil moisture at 68% — 23% above optimal for leafy greens. Suspend watering 6–8 hours to prevent root rot.</div><span class="pb pb-hi">High priority</span></div></div>
+        <div class="rec-card"><div class="rec-ic ri-g"><i class="ti ti-chemistry"></i></div><div><div class="rec-title">pH adjustment required</div><div class="rec-desc">Soil pH 6.2 — below ideal 6.5–7.0 range. Apply lime-based neutralizer to raise pH and improve nutrient uptake.</div><span class="pb pb-md">Medium priority</span></div></div>
+        <div class="rec-card"><div class="rec-ic ri-b"><i class="ti ti-cloud-download"></i></div><div><div class="rec-title">Canopy collecting efficiently</div><div class="rec-desc">148L recovered today. System efficiency at 94%. Canopy operating at optimal capacity — no action needed.</div><span class="pb pb-lo">All good</span></div></div>
+        <!-- WATER CHART -->
+        <div class="sec-title" style="margin-top:8px"><i class="ti ti-droplets"></i> Water recovery — 7-day</div>
+        <div class="chart-card">
+          <div class="chart-hdr"><div class="chart-title">Transpiration + humidity capture (litres)</div><div class="chart-legend"><span><span class="ldot" style="background:var(--g400)"></span>Transpiration</span><span><span class="ldot" style="background:var(--b400)"></span>Humidity</span></div></div>
+          <div style="position:relative;height:200px"><canvas id="waterChart"></canvas></div>
+        </div>
+        <!-- TIPS -->
+        <div class="sec-title"><i class="ti ti-bulb"></i> Daily farming tip</div>
+        <div class="tip-card">
+          <div class="tip-lbl">💡 Tip of the day</div>
+          <div class="tip-text" id="tipText">Watering plants early morning (6–8 AM) reduces evaporation loss by up to 40%. Plant Cloud™ automatically schedules irrigation during this optimal window.</div>
+          <div class="tip-dots" id="tipDots">
+            <button class="tip-dot on" onclick="showTip(0)"></button><button class="tip-dot" onclick="showTip(1)"></button><button class="tip-dot" onclick="showTip(2)"></button><button class="tip-dot" onclick="showTip(3)"></button><button class="tip-dot" onclick="showTip(4)"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page">
+      <div class="page-header"><h1><i class="ti ti-chart-line"></i> Live sensor dashboard</h1><p>Enter your Plant Cloud™ system model number to load real-time sensor data</p></div>
+
+      <!-- MODEL NUMBER GATE -->
+      <div id="modelGate" style="background:linear-gradient(135deg,#E8FDF3,#E8F4FF);border:2px solid var(--g100);border-radius:var(--r-2xl);padding:40px;text-align:center;margin-bottom:24px">
+        <div style="font-size:52px;margin-bottom:16px">🔌</div>
+        <h2 style="font-family:var(--font-d);font-size:22px;font-weight:800;color:var(--gray900);margin-bottom:8px">Connect your Plant Cloud™ device</h2>
+        <p style="font-size:14px;color:var(--gray500);margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto">Enter the model number printed on your Plant Cloud™ hub or sensor gateway to load your live farm data.</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
+          <input id="modelInput" type="text" placeholder="e.g. PC-2024-KL-001" maxlength="20" style="padding:12px 18px;border:2px solid var(--gray200);border-radius:var(--r-md);font-size:14px;font-weight:600;width:240px;text-align:center;letter-spacing:.05em;text-transform:uppercase;outline:none;font-family:var(--font-b);background:var(--white);color:var(--gray900);transition:border-color .2s" oninput="this.value=this.value.toUpperCase()" onfocus="this.style.borderColor='var(--g400)'" onblur="this.style.borderColor='var(--gray200)'" onkeydown="if(event.key==='Enter')loadSensorData()">
+          <button onclick="loadSensorData()" style="background:linear-gradient(135deg,var(--g400),var(--g600));color:#fff;border:none;padding:12px 24px;border-radius:var(--r-md);font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-b);transition:all .2s;box-shadow:0 4px 14px rgba(22,176,125,.3)" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'"><i class="ti ti-plug"></i> Connect</button>
+        </div>
+        <div id="modelError" style="display:none;color:var(--r400);font-size:13px;font-weight:600;margin-top:8px"></div>
+        <div style="margin-top:18px;padding:12px 16px;background:rgba(34,176,125,.08);border-radius:var(--r-md);display:inline-block">
+          <div style="font-size:11.5px;color:var(--g600);font-weight:600;margin-bottom:6px">🧪 Try a demo model number:</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+            <button onclick="document.getElementById('modelInput').value='PC-2024-KL-001';loadSensorData()" style="background:var(--g50);color:var(--g700);border:1.5px solid var(--g100);border-radius:var(--r-full);padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-b);transition:all .15s" onmouseover="this.style.background='var(--g400)';this.style.color='#fff'" onmouseout="this.style.background='var(--g50)';this.style.color='var(--g700)'">PC-2024-KL-001</button>
+            <button onclick="document.getElementById('modelInput').value='PC-2024-MH-042';loadSensorData()" style="background:var(--g50);color:var(--g700);border:1.5px solid var(--g100);border-radius:var(--r-full);padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-b);transition:all .15s" onmouseover="this.style.background='var(--g400)';this.style.color='#fff'" onmouseout="this.style.background='var(--g50)';this.style.color='var(--g700)'">PC-2024-MH-042</button>
+            <button onclick="document.getElementById('modelInput').value='PC-2025-TN-007';loadSensorData()" style="background:var(--g50);color:var(--g700);border:1.5px solid var(--g100);border-radius:var(--r-full);padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-b);transition:all .15s" onmouseover="this.style.background='var(--g400)';this.style.color='#fff'" onmouseout="this.style.background='var(--g50)';this.style.color='var(--g700)'">PC-2025-TN-007</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SENSOR DATA (hidden until model loaded) -->
+      <div id="sensorData" style="display:none;animation:fadeIn .4s ease">
+        <div id="deviceBanner" style="background:linear-gradient(90deg,var(--g50),var(--b50));border:1.5px solid var(--g100);border-radius:var(--r-lg);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--g400);animation:pulse 1.5s ease infinite"></div>
+            <span style="font-size:13.5px;font-weight:700;color:var(--g800)">Connected — <span id="deviceModelLabel">--</span></span>
+            <span style="font-size:12px;color:var(--gray400)" id="deviceLocLabel"></span>
+          </div>
+          <button onclick="disconnectDevice()" style="background:var(--r50);color:var(--r600);border:1.5px solid rgba(239,83,80,.2);border-radius:var(--r-md);padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-b)"><i class="ti ti-plug-x"></i> Disconnect</button>
+        </div>
+        <div class="stat-grid" id="sensorTiles">
+          <!-- filled by JS -->
+        </div>
+        <div class="sec-title"><i class="ti ti-chart-line"></i> Sensor trends — 24 hours</div>
+        <div class="chart-card"><div class="chart-hdr"><div class="chart-title">Temperature & humidity</div><div class="chart-legend"><span><span class="ldot" style="background:#D85A30"></span>Temp °C</span><span><span class="ldot" style="background:var(--b400)"></span>Humidity %</span></div></div><div style="position:relative;height:220px"><canvas id="trendChart"></canvas></div></div>
+        <div class="chart-card"><div class="chart-hdr"><div class="chart-title">Soil moisture & pH</div><div class="chart-legend"><span><span class="ldot" style="background:var(--g400)"></span>Moisture %</span><span><span class="ldot" style="background:var(--p400)"></span>pH</span></div></div><div style="position:relative;height:180px"><canvas id="soilChart"></canvas></div></div>
+        <div class="sec-title"><i class="ti ti-activity"></i> Farm analytics — 6 months</div>
+        <div class="chart-card"><div class="chart-hdr"><div class="chart-title">Yield vs water usage</div><div class="chart-legend"><span><span class="ldot" style="background:var(--g400)"></span>Yield kg/ha</span><span><span class="ldot" style="background:var(--b400)"></span>Water kL</span></div></div><div style="position:relative;height:200px"><canvas id="analyticsChart"></canvas></div></div>
+      </div>
+    </div>
+
+    <!-- DISEASE -->
+    <div id="page-disease" class="page">
+      <div class="page-header"><h1><i class="ti ti-microscope"></i> Plant disease detection</h1><p>Upload a leaf photo — PlantNet v3.1 identifies 200+ diseases in under 2 seconds</p></div>
+      <div class="upload-zone" onclick="simScan()" id="uploadZone"><i class="ti ti-camera-plus"></i><div class="uz-title" id="uzTitle">Upload a leaf photo or click to simulate scan</div><p style="font-size:13px;color:var(--gray400)">JPG, PNG · Max 10MB · Instant AI results</p></div>
+      <div class="sec-title"><i class="ti ti-sparkles"></i> Latest scan — Tomato leaf · 2 min ago</div>
+      <div class="section-card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--gray150)"><div style="width:40px;height:40px;background:var(--g50);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center"><i class="ti ti-microscope" style="font-size:20px;color:var(--g700)"></i></div><div><div style="font-size:14px;font-weight:700;color:var(--gray900)">AI scan results</div><div style="font-size:12px;color:var(--gray400)">Confidence threshold: 85% · PlantNet v3.1</div></div></div>
+        <div class="d-row"><div><div class="d-name">Early blight (Alternaria solani)</div><div class="d-sub">Fungal · Treatment: Mancozeb 75WP spray</div></div><div class="conf-col"><div class="conf-pct" style="color:var(--r400)">91%</div><div class="conf-bg"><div class="conf-fill cf-r" style="width:91%"></div></div></div></div>
+        <div class="d-row"><div><div class="d-name">Septoria leaf spot</div><div class="d-sub">Fungal · Treatment: Copper fungicide</div></div><div class="conf-col"><div class="conf-pct" style="color:var(--a400)">34%</div><div class="conf-bg"><div class="conf-fill cf-a" style="width:34%"></div></div></div></div>
+        <div class="d-row"><div><div class="d-name">Healthy leaf tissue</div><div class="d-sub">No disease detected here</div></div><div class="conf-col"><div class="conf-pct" style="color:var(--g400)">12%</div><div class="conf-bg"><div class="conf-fill cf-g" style="width:12%"></div></div></div></div>
+      </div>
+      <div class="sec-title"><i class="ti ti-pill"></i> Recommended treatment plan</div>
+      <div class="rec-card"><div class="rec-ic ri-a"><i class="ti ti-spray"></i></div><div><div class="rec-title">Apply Mancozeb 75WP fungicide</div><div class="rec-desc">Dilute 2g/L water. Spray every 7–10 days, especially after rain. Avoid midday spray to prevent leaf burn.</div><span class="pb pb-hi">Immediate</span></div></div>
+      <div class="rec-card"><div class="rec-ic ri-g"><i class="ti ti-scissors"></i></div><div><div class="rec-title">Remove infected lower leaves</div><div class="rec-desc">Prune and dispose of visibly infected foliage. Do not compost affected material — bag and discard separately.</div><span class="pb pb-md">Within 24h</span></div></div>
+      <div class="rec-card"><div class="rec-ic ri-b"><i class="ti ti-wind"></i></div><div><div class="rec-title">Improve canopy airflow</div><div class="rec-desc">High humidity in Zone A promotes fungal spread. Open canopy vents 30% during midday to reduce leaf moisture.</div><span class="pb pb-lo">Preventive</span></div></div>
+    </div>
+
+    <!-- IRRIGATION -->
+    <div id="page-irrigation" class="page">
+      <div class="page-header"><h1><i class="ti ti-droplet"></i> Smart irrigation control</h1><p>AI-managed zone delivery · Toggle to override AI schedule</p></div>
+      <div class="irrig-ai"><i class="ti ti-robot"></i><div><div class="iai-t">AI irrigation schedule active</div><div class="iai-s">Next auto-water: Zone A at 18:30 · Est. 42L · Zone D flagged for re-assessment</div></div></div>
+      <div class="zone-grid">
+        <div class="zone-card"><div class="zone-hd"><div class="zone-name"><div class="zdot zdot-g"></div>Zone A — Tomatoes</div><button class="ztoggle on" id="za" onclick="toggleZone('za')" role="switch" aria-checked="true"></button></div><div class="z-row"><span>Soil moisture</span><span>45%</span></div><div class="z-row"><span>Flow rate</span><span>2.4 L/min</span></div><div class="z-row"><span>Today</span><span>38L</span></div><div class="z-bar"><div class="z-fill" style="width:45%"></div></div></div>
+        <div class="zone-card"><div class="zone-hd"><div class="zone-name"><div class="zdot zdot-r"></div>Zone B — Greens</div><button class="ztoggle off" id="zb" onclick="toggleZone('zb')" role="switch" aria-checked="false"></button></div><div class="z-row"><span>Soil moisture</span><span>68%</span></div><div class="z-row"><span>Flow rate</span><span>0 L/min</span></div><div class="z-row"><span>Today</span><span>55L</span></div><div class="z-bar"><div class="z-fill" style="width:68%;background:linear-gradient(90deg,var(--r400),#FF6B6B)"></div></div></div>
+        <div class="zone-card"><div class="zone-hd"><div class="zone-name"><div class="zdot zdot-g"></div>Zone C — Peppers</div><button class="ztoggle on" id="zc" onclick="toggleZone('zc')" role="switch" aria-checked="true"></button></div><div class="z-row"><span>Soil moisture</span><span>52%</span></div><div class="z-row"><span>Flow rate</span><span>1.8 L/min</span></div><div class="z-row"><span>Today</span><span>29L</span></div><div class="z-bar"><div class="z-fill" style="width:52%"></div></div></div>
+        <div class="zone-card"><div class="zone-hd"><div class="zone-name"><div class="zdot zdot-a"></div>Zone D — Wheat</div><button class="ztoggle off" id="zd" onclick="toggleZone('zd')" role="switch" aria-checked="false"></button></div><div class="z-row"><span>Soil moisture</span><span>31%</span></div><div class="z-row"><span>Flow rate</span><span>0 L/min</span></div><div class="z-row"><span>Today</span><span>12L</span></div><div class="z-bar"><div class="z-fill" style="width:31%;background:linear-gradient(90deg,var(--a400),var(--y400))"></div></div></div>
+      </div>
+      <div class="sec-title"><i class="ti ti-chart-bar"></i> Zone water usage today</div>
+      <div class="chart-card"><div style="position:relative;height:200px"><canvas id="irrigChart"></canvas></div></div>
+    </div>
+
+    <!-- 3D TOUR -->
+    <div id="page-tour" class="page">
+      <div class="page-header"><h1><i class="ti ti-3d-cube-sphere"></i> 3D virtual tour</h1><p>Explore the Plant Cloud™ system · Click hotspots to learn about each component</p></div>
+      <div class="tour-wrap">
+        <div style="position:absolute;top:20px;left:24px;z-index:5;color:#fff"><div style="font-family:var(--font-d);font-size:18px;font-weight:700">Plant Cloud™ Farm Scene</div><div style="font-size:12px;opacity:.65;margin-top:3px">Click glowing dots to explore components</div></div>
+        <div class="tour-svg-wrap" id="tourSvg" style="position:relative">
+          <svg viewBox="0 0 700 440" width="100%" style="display:block">
+            <defs><linearGradient id="tSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06402F"/><stop offset="60%" stop-color="#0F6B45"/><stop offset="100%" stop-color="#1A1600"/></linearGradient><linearGradient id="tGnd" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2D7A3A"/><stop offset="100%" stop-color="#1A4D25"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><radialGradient id="spotLight" cx="50%" cy="0%" r="80%"><stop offset="0%" stop-color="rgba(34,176,125,0.15)"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs>
+            <rect width="700" height="440" fill="url(#tSky)"/>
+            <rect width="700" height="440" fill="url(#spotLight)"/>
+            <circle cx="80" cy="50" r="1.5" fill="white" opacity=".5"/><circle cx="160" cy="30" r="1" fill="white" opacity=".4"/><circle cx="240" cy="65" r="1.5" fill="white" opacity=".6"/><circle cx="560" cy="35" r="1" fill="white" opacity=".5"/><circle cx="640" cy="55" r="1.5" fill="white" opacity=".4"/><circle cx="680" cy="25" r="1" fill="white" opacity=".6"/>
+            <rect y="320" width="700" height="120" fill="url(#tGnd)"/>
+            <line x1="0" y1="335" x2="700" y2="335" stroke="#3DD4A0" stroke-width=".4" opacity=".3"/>
+            <!-- Canopy structure -->
+            <rect x="50" y="100" width="600" height="12" fill="#1D9E75" rx="4" filter="url(#glow)"/>
+            <rect x="50" y="100" width="6" height="230" fill="#0F6E56" rx="2"/>
+            <rect x="644" y="100" width="6" height="230" fill="#0F6E56" rx="2"/>
+            <!-- Panels -->
+            <rect x="65" y="112" width="72" height="24" fill="#22B07D" rx="3" filter="url(#glow)" opacity=".92"/>
+            <rect x="148" y="112" width="72" height="24" fill="#22B07D" rx="3" opacity=".92"/>
+            <rect x="231" y="112" width="72" height="24" fill="#22B07D" rx="3" filter="url(#glow)" opacity=".92"/>
+            <rect x="314" y="112" width="72" height="24" fill="#22B07D" rx="3" opacity=".92"/>
+            <rect x="397" y="112" width="72" height="24" fill="#22B07D" rx="3" filter="url(#glow)" opacity=".92"/>
+            <rect x="480" y="112" width="72" height="24" fill="#22B07D" rx="3" opacity=".92"/>
+            <rect x="563" y="112" width="75" height="24" fill="#22B07D" rx="3" filter="url(#glow)" opacity=".92"/>
+            <!-- Animated drops -->
+            <circle cx="100" cy="160" r="3" fill="#7DD9FF"><animate attributeName="cy" from="140" to="320" dur="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" from=".9" to="0" dur="2.2s" repeatCount="indefinite"/></circle>
+            <circle cx="270" cy="155" r="3" fill="#7DD9FF"><animate attributeName="cy" from="140" to="320" dur="2.6s" repeatCount="indefinite" begin=".7s"/><animate attributeName="opacity" from=".9" to="0" dur="2.6s" repeatCount="indefinite" begin=".7s"/></circle>
+            <circle cx="440" cy="160" r="3" fill="#7DD9FF"><animate attributeName="cy" from="140" to="320" dur="2s" repeatCount="indefinite" begin="1.2s"/><animate attributeName="opacity" from=".9" to="0" dur="2s" repeatCount="indefinite" begin="1.2s"/></circle>
+            <circle cx="610" cy="155" r="3" fill="#7DD9FF"><animate attributeName="cy" from="140" to="320" dur="2.4s" repeatCount="indefinite" begin=".4s"/><animate attributeName="opacity" from=".9" to="0" dur="2.4s" repeatCount="indefinite" begin=".4s"/></circle>
+            <!-- Plants -->
+            <line x1="100" y1="320" x2="100" y2="258" stroke="#2D9C50" stroke-width="3"/><ellipse cx="100" cy="256" rx="17" ry="11" fill="#3DBA60" opacity=".95"/>
+            <line x1="185" y1="320" x2="185" y2="252" stroke="#2D9C50" stroke-width="3"/><ellipse cx="185" cy="250" rx="15" ry="10" fill="#22B07D" opacity=".95"/>
+            <line x1="270" y1="320" x2="270" y2="258" stroke="#2D9C50" stroke-width="3"/><ellipse cx="270" cy="256" rx="17" ry="11" fill="#3DBA60" opacity=".95"/>
+            <line x1="355" y1="320" x2="355" y2="252" stroke="#2D9C50" stroke-width="3"/><ellipse cx="355" cy="250" rx="16" ry="10" fill="#22B07D" opacity=".95"/>
+            <line x1="440" y1="320" x2="440" y2="256" stroke="#2D9C50" stroke-width="3"/><ellipse cx="440" cy="254" rx="17" ry="11" fill="#3DBA60" opacity=".95"/>
+            <line x1="525" y1="320" x2="525" y2="252" stroke="#2D9C50" stroke-width="3"/><ellipse cx="525" cy="250" rx="15" ry="10" fill="#22B07D" opacity=".95"/>
+            <line x1="610" y1="320" x2="610" y2="256" stroke="#2D9C50" stroke-width="3"/><ellipse cx="610" cy="254" rx="17" ry="11" fill="#3DBA60" opacity=".95"/>
+            <!-- Control panel -->
+            <rect x="298" y="190" width="104" height="72" fill="#0A140D" rx="8" stroke="#22B07D" stroke-width="1.5" filter="url(#glow)"/>
+            <text x="350" y="207" text-anchor="middle" font-size="7.5" fill="#22B07D" font-weight="700" font-family="Space Grotesk,sans-serif">PLANT CLOUD™</text>
+            <rect x="305" y="213" width="18" height="16" fill="#1D9E75" rx="3" opacity=".85"/>
+            <rect x="328" y="213" width="18" height="16" fill="#378ADD" rx="3" opacity=".85"/>
+            <rect x="351" y="213" width="18" height="16" fill="#FFCA28" rx="3" opacity=".85"/>
+            <rect x="374" y="213" width="22" height="16" fill="#E24B4A" rx="3" opacity=".85"/>
+            <rect x="305" y="234" width="16" height="14" fill="#8B7CF6" rx="3" opacity=".85"/>
+            <rect x="325" y="234" width="16" height="14" fill="#22B07D" rx="3" opacity=".85"/>
+            <rect x="345" y="234" width="16" height="14" fill="#FFA726" rx="3" opacity=".85"/>
+            <rect x="365" y="234" width="30" height="14" fill="#E24B4A" rx="3" opacity=".85"/>
+            <!-- Sensor nodes animated -->
+            <g style="cursor:pointer" onclick="showHotspot('canopy')">
+              <circle cx="150" cy="295" r="10" fill="#22B07D" opacity=".9" filter="url(#glow)"><animate attributeName="r" from="10" to="14" dur="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" from=".9" to=".5" dur="1.5s" repeatCount="indefinite"/></circle>
+              <text x="150" y="299" text-anchor="middle" font-size="9" fill="white" font-weight="700">C</text>
+            </g>
+            <g style="cursor:pointer" onclick="showHotspot('sensor')">
+              <circle cx="350" cy="295" r="10" fill="#FFCA28" opacity=".9" filter="url(#glow)"><animate attributeName="r" from="10" to="14" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" from=".9" to=".5" dur="1.8s" repeatCount="indefinite"/></circle>
+              <text x="350" y="299" text-anchor="middle" font-size="9" fill="#333" font-weight="700">S</text>
+            </g>
+            <g style="cursor:pointer" onclick="showHotspot('ai')">
+              <circle cx="350" cy="200" r="10" fill="#8B7CF6" opacity=".9" filter="url(#glow)"><animate attributeName="r" from="10" to="14" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" from=".9" to=".5" dur="2s" repeatCount="indefinite"/></circle>
+              <text x="350" y="204" text-anchor="middle" font-size="9" fill="white" font-weight="700">AI</text>
+            </g>
+            <g style="cursor:pointer" onclick="showHotspot('solar')">
+              <circle cx="560" cy="295" r="10" fill="#FFA726" opacity=".9" filter="url(#glow)"><animate attributeName="r" from="10" to="14" dur="1.3s" repeatCount="indefinite"/><animate attributeName="opacity" from=".9" to=".5" dur="1.3s" repeatCount="indefinite"/></circle>
+              <text x="560" y="299" text-anchor="middle" font-size="9" fill="white" font-weight="700">☀</text>
+            </g>
+            <rect x="0" y="0" width="700" height="440" fill="none" stroke="#22B07D" stroke-width="1" opacity=".2" rx="6"/>
+          </svg>
+          <div id="tourTooltip" style="display:none;position:absolute;background:rgba(0,0,0,.88);color:#fff;padding:10px 16px;border-radius:var(--r-lg);font-size:13px;font-weight:600;max-width:220px;border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(8px);z-index:20;line-height:1.55"></div>
+        </div>
+      </div>
+      <div class="tour-cmp-grid">
+        <div class="tour-cmp"><div class="tc-icon">🌿</div><h4>Self-watering canopy</h4><p>Condensation sheet captures transpiration water and redistributes via adjustable openings</p></div>
+        <div class="tour-cmp"><div class="tc-icon">🌡️</div><h4>5-sensor array</h4><p>Temperature, humidity, soil moisture, pH and light intensity — logging continuously</p></div>
+        <div class="tour-cmp"><div class="tc-icon">🤖</div><h4>AI control hub</h4><p>Random Forest ML model processes sensor data and makes real-time canopy decisions</p></div>
+        <div class="tour-cmp"><div class="tc-icon">☀️</div><h4>Solar power module</h4><p>10W panel powers the entire sensor array and communication module without grid electricity</p></div>
+      </div>
+    </div>
+
+    <!-- COMMUNITY -->
+    <div id="page-community" class="page">
+      <div class="page-header"><h1><i class="ti ti-users"></i> Farmer community</h1><p>Connect, share and learn from thousands of Plant Cloud™ farmers across India</p></div>
+      <div class="sec-title"><i class="ti ti-trending-up"></i> Trending topics</div>
+      <div class="trending-wrap"><span class="trend-tag"><i class="ti ti-flame"></i> Early blight</span><span class="trend-tag"><i class="ti ti-flame"></i> Kerala monsoon prep</span><span class="trend-tag"><i class="ti ti-flame"></i> pH correction</span><span class="trend-tag"><i class="ti ti-flame"></i> Tomato yield tips</span><span class="trend-tag"><i class="ti ti-flame"></i> Drip vs canopy</span><span class="trend-tag"><i class="ti ti-flame"></i> Sensor calibration</span></div>
+      <div class="sec-title"><i class="ti ti-pencil"></i> Share with the community</div>
+      <div class="new-post-box">
+        <textarea class="np-input" id="npInput" placeholder="Share a farming tip, ask a question or post a success story…"></textarea>
+        <div class="np-footer">
+          <div class="tag-chips"><button class="tag-chip active" onclick="this.classList.toggle('active')">🌱 Tips</button><button class="tag-chip" onclick="this.classList.toggle('active')">❓ Question</button><button class="tag-chip" onclick="this.classList.toggle('active')">🏆 Success</button><button class="tag-chip" onclick="this.classList.toggle('active')">🐛 Disease</button></div>
+          <button class="btn btn-primary btn-sm" onclick="postForum()"><i class="ti ti-send"></i> Post</button>
+        </div>
+      </div>
+      <div class="sec-title"><i class="ti ti-messages"></i> Community discussions</div>
+      <div id="forumFeed">
+        <div class="forum-card"><div class="fc-hdr"><div class="fc-av">RS</div><div><div class="fc-author">Rajesh Sharma <span style="font-size:11px;color:var(--g400);font-weight:700">🌟 Top Farmer</span></div><div class="fc-time">2 hours ago · Pune, Maharashtra</div></div></div><div class="fc-body">Finally got my tomato pH stable at 6.8 after months of struggle! The Plant Cloud™ pH sensor gave me daily readings and I used lime corrector in small doses over 3 weeks. Yield is up 28% this season 🍅🎉</div><div><span class="fc-tag">#pH correction</span><span class="fc-tag">#tomatoes</span><span class="fc-tag">#success</span></div><div class="fc-actions"><button class="fc-act" onclick="likePost(this)"><i class="ti ti-heart"></i> <span>47</span></button><button class="fc-act" onclick="showComment(this)"><i class="ti ti-message-circle"></i> 12</button><button class="fc-act"><i class="ti ti-share"></i> Share</button></div></div>
+        <div class="forum-card"><div class="fc-hdr"><div class="fc-av" style="background:linear-gradient(135deg,var(--b400),var(--p400))">PM</div><div><div class="fc-author">Priya Menon</div><div class="fc-time">5 hours ago · Kochi, Kerala</div></div></div><div class="fc-body">❓ Anyone getting high humidity readings (85%+) during evenings? My canopy is fully closing but soil is still getting damp. Is this normal for monsoon prep or should I recalibrate my humidity sensor?</div><div><span class="fc-tag">#humidity</span><span class="fc-tag">#sensor</span><span class="fc-tag">#kerala</span></div><div class="fc-actions"><button class="fc-act" onclick="likePost(this)"><i class="ti ti-heart"></i> <span>23</span></button><button class="fc-act" onclick="showComment(this)"><i class="ti ti-message-circle"></i> 8</button><button class="fc-act"><i class="ti ti-share"></i> Share</button></div></div>
+        <div class="forum-card"><div class="fc-hdr"><div class="fc-av" style="background:linear-gradient(135deg,var(--a400),var(--r400))">KP</div><div><div class="fc-author">Kiran Patel</div><div class="fc-time">Yesterday · Ahmedabad, Gujarat</div></div></div><div class="fc-body">💡 Pro tip: For wheat in hot/dry climates, set your soil moisture target to 35–40% instead of default 50%. I reduced water usage by 30% with the same yield. The AI adapted to my custom settings after 2 weeks!</div><div><span class="fc-tag">#wheat</span><span class="fc-tag">#irrigation</span><span class="fc-tag">#tips</span></div><div class="fc-actions"><button class="fc-act liked" onclick="likePost(this)"><i class="ti ti-heart-filled"></i> <span>89</span></button><button class="fc-act" onclick="showComment(this)"><i class="ti ti-message-circle"></i> 31</button><button class="fc-act"><i class="ti ti-share"></i> Share</button></div></div>
+      </div>
+      <div class="sec-title" style="margin-top:8px"><i class="ti ti-trophy"></i> Success stories</div>
+      <div class="story-card"><div style="font-size:26px;margin-bottom:7px">🏅</div><div class="story-name">Suresh Kumar, 52</div><div class="story-loc"><i class="ti ti-map-pin"></i> Nashik, Maharashtra · Onion farmer since 1994</div><div class="story-body">"I was losing 40% of my crop to overwatering and fungal disease every season. After Plant Cloud™, the AI detected my soil was always too wet at night. I saved ₹1.2 lakh in water and fertilizer costs in just one season."</div><div><span class="story-stat"><i class="ti ti-droplets"></i> 58% less water</span><span class="story-stat"><i class="ti ti-plant"></i> 41% more yield</span><span class="story-stat"><i class="ti ti-coin-rupee"></i> ₹1.2L saved</span></div></div>
+      <div class="story-card"><div style="font-size:26px;margin-bottom:7px">🥇</div><div class="story-name">Lakshmi Devi, 38</div><div class="story-loc"><i class="ti ti-map-pin"></i> Tiruvannamalai, Tamil Nadu · Vegetable farmer</div><div class="story-body">"PlantBot helped me identify powdery mildew on my bitter gourd before I even noticed it visually. The AI recommended neem oil spray and the disease was contained within a week. Now I check PlantBot every morning!"</div><div><span class="story-stat"><i class="ti ti-microscope"></i> Disease detected early</span><span class="story-stat"><i class="ti ti-chart-line"></i> 3× better yield</span></div></div>
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+    <div id="page-achievements" class="page">
+      <div class="page-header"><h1><i class="ti ti-trophy"></i> Achievements & progress</h1><p>Track your farming milestones and unlock rewards as your farm grows</p></div>
+      <div class="sec-title"><i class="ti ti-medal"></i> Your badges</div>
+      <div class="ach-grid">
+        <div class="ach-card earned"><div class="ach-icon">🌱</div><div class="ach-name">First Harvest ✓</div><div class="ach-desc">First season complete</div></div>
+        <div class="ach-card earned"><div class="ach-icon">💧</div><div class="ach-name">Water Saver ✓</div><div class="ach-desc">Saved 100L+ in a day</div></div>
+        <div class="ach-card earned"><div class="ach-icon">🤖</div><div class="ach-name">AI Adopter ✓</div><div class="ach-desc">Used AI 100+ times</div></div>
+        <div class="ach-card earned"><div class="ach-icon">🏥</div><div class="ach-name">Disease Hunter ✓</div><div class="ach-desc">Detected 3+ diseases</div></div>
+        <div class="ach-card locked"><div class="ach-icon">🌾</div><div class="ach-name">Mega Yield</div><div class="ach-desc">50% yield improvement</div></div>
+        <div class="ach-card locked"><div class="ach-icon">⚡</div><div class="ach-name">Solar Power</div><div class="ach-desc">30 days solar-only</div></div>
+        <div class="ach-card locked"><div class="ach-icon">👥</div><div class="ach-name">Community Star</div><div class="ach-desc">50+ helpful posts</div></div>
+        <div class="ach-card locked"><div class="ach-icon">🏆</div><div class="ach-name">Platinum Farmer</div><div class="ach-desc">All badges unlocked</div></div>
+      </div>
+      <div class="sec-title"><i class="ti ti-progress"></i> Farm progress this season</div>
+      <div id="progBars">
+        <div class="prog-item"><div class="prog-hdr"><span>💧 Water efficiency</span><span>78%</span></div><div class="prog-bg"><div class="prog-fill" data-w="78%"></div></div></div>
+        <div class="prog-item"><div class="prog-hdr"><span>🌱 Crop health score</span><span>84%</span></div><div class="prog-bg"><div class="prog-fill" data-w="84%"></div></div></div>
+        <div class="prog-item"><div class="prog-hdr"><span>🤖 AI automation level</span><span>91%</span></div><div class="prog-bg"><div class="prog-fill" data-w="91%"></div></div></div>
+        <div class="prog-item"><div class="prog-hdr"><span>🌍 Sustainability score</span><span>65%</span></div><div class="prog-bg"><div class="prog-fill" data-w="65%"></div></div></div>
+        <div class="prog-item"><div class="prog-hdr"><span>👥 Community engagement</span><span>42%</span></div><div class="prog-bg"><div class="prog-fill" data-w="42%"></div></div></div>
+      </div>
+      <div class="sec-title" style="margin-top:8px"><i class="ti ti-chart-radar"></i> Season overview</div>
+      <div class="chart-card"><div style="position:relative;height:220px"><canvas id="achChart"></canvas></div></div>
+    </div>
+
+    <!-- MARKETPLACE -->
+    <div id="page-market" class="page">
+      <div class="page-header"><h1><i class="ti ti-shopping-bag"></i> Agricultural marketplace</h1><p>AI-curated products based on your live sensor readings</p></div>
+      <div class="ai-mkt-bar"><i class="ti ti-sparkles"></i><p><strong>AI recommends:</strong> Based on pH 6.2, a lime pH corrector is suggested. Low moisture in Zone D — drip kit flagged.</p></div>
+      <div class="cat-row">
+        <button class="cat-chip active" onclick="filterMkt('all',this)">All products</button>
+        <button class="cat-chip" onclick="filterMkt('hardware',this)">Plant Cloud™ Hardware</button>
+        <button class="cat-chip" onclick="filterMkt('sensors',this)">Sensors</button>
+        <button class="cat-chip" onclick="filterMkt('seeds',this)">Seeds</button>
+        <button class="cat-chip" onclick="filterMkt('fertilizers',this)">Fertilizers</button>
+        <button class="cat-chip" onclick="filterMkt('irrigation',this)">Irrigation</button>
+      </div>
+      <div class="mkt-grid" id="mktGrid">
+        <div class="mkt-card" data-cat="hardware"><div class="mkt-img">💻</div><div class="mkt-name">Plant Cloud™ Starter Kit <span class="ai-badge">AI pick</span></div><div class="mkt-sub">Full sensor array + canopy controller</div><div class="mkt-price">₹12,499</div><button class="mkt-buy" onclick="addToCart('Plant Cloud™ Starter Kit','💻',12499,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="sensors"><div class="mkt-img">🧪</div><div class="mkt-name">pH Sensor Pro <span class="ai-badge">AI pick</span></div><div class="mkt-sub">±0.01 accuracy · IP68 · 2yr</div><div class="mkt-price">₹1,850</div><button class="mkt-buy" onclick="addToCart('pH Sensor Pro','🧪',1850,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="fertilizers"><div class="mkt-img">🧴</div><div class="mkt-name">Lime pH Corrector <span class="ai-badge">AI pick</span></div><div class="mkt-sub">2kg · Raises soil pH naturally</div><div class="mkt-price">₹349</div><button class="mkt-buy" onclick="addToCart('Lime pH Corrector','🧴',349,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="sensors"><div class="mkt-img">💦</div><div class="mkt-name">Soil Moisture Sensor</div><div class="mkt-sub">Capacitive · IP67 · 1m cable</div><div class="mkt-price">₹899</div><button class="mkt-buy" onclick="addToCart('Soil Moisture Sensor','💦',899,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="seeds"><div class="mkt-img">🌱</div><div class="mkt-name">Hybrid Tomato Seeds</div><div class="mkt-sub">High-yield · Disease resistant</div><div class="mkt-price">₹180</div><button class="mkt-buy" onclick="addToCart('Hybrid Tomato Seeds','🌱',180,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="irrigation"><div class="mkt-img">🚿</div><div class="mkt-name">Drip Irrigation Kit <span class="ai-badge">AI pick</span></div><div class="mkt-sub">100m coverage · Auto pressure</div><div class="mkt-price">₹2,299</div><button class="mkt-buy" onclick="addToCart('Drip Irrigation Kit','🚿',2299,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="fertilizers"><div class="mkt-img">🌿</div><div class="mkt-name">NPK Balanced Fertilizer</div><div class="mkt-sub">5kg · 19:19:19 slow release</div><div class="mkt-price">₹620</div><button class="mkt-buy" onclick="addToCart('NPK Fertilizer','🌿',620,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="hardware"><div class="mkt-img">📡</div><div class="mkt-name">Plant Cloud™ Gateway</div><div class="mkt-sub">Wi-Fi + 4G · 32 sensors</div><div class="mkt-price">₹4,999</div><button class="mkt-buy" onclick="addToCart('Plant Cloud™ Gateway','📡',4999,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="sensors"><div class="mkt-img">☀️</div><div class="mkt-name">Light Intensity Sensor</div><div class="mkt-sub">0–100,000 Lux · UV-resistant</div><div class="mkt-price">₹1,199</div><button class="mkt-buy" onclick="addToCart('Light Sensor','☀️',1199,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="seeds"><div class="mkt-img">🌾</div><div class="mkt-name">High-yield Wheat Seeds</div><div class="mkt-sub">Drought-tolerant · 1kg pack</div><div class="mkt-price">₹240</div><button class="mkt-buy" onclick="addToCart('Wheat Seeds','🌾',240,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="hardware"><div class="mkt-img">🔆</div><div class="mkt-name">Solar Power Module</div><div class="mkt-sub">10W · Powers 8 sensors</div><div class="mkt-price">₹3,499</div><button class="mkt-buy" onclick="addToCart('Solar Module','🔆',3499,this)">Add to cart</button></div>
+        <div class="mkt-card" data-cat="irrigation"><div class="mkt-img">🔧</div><div class="mkt-name">Smart Valve Controller</div><div class="mkt-sub">4-zone · App controlled · 24V</div><div class="mkt-price">₹1,750</div><button class="mkt-buy" onclick="addToCart('Smart Valve','🔧',1750,this)">Add to cart</button></div>
+      </div>
+      <div style="height:24px"></div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  <p>© 2025 Plant Cloud Technologies Pvt. Ltd. · Bhavan's Vidya Mandir, Kochi · CBSE AI Project Code 417</p>
+  <div class="footer-links"><a href="#">Privacy</a><a href="#">Docs</a><a href="#">Contact</a><a href="#">About</a></div>
+</footer>
+
+<script>
+/* ── PAGE NAV ── */
+const pageIds=['home','dashboard','disease','irrigation','tour','community','achievements','market'];
+const navMap={home:0,dashboard:1,disease:2,irrigation:3,tour:4,community:5,achievements:6,market:7};
+const sbMap={home:0,dashboard:1,disease:2,irrigation:3,tour:4,community:5,market:6,achievements:7};
+function showPage(id,navBtn,sbBtn){
+  pageIds.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.classList.remove('active')});
+  const pg=document.getElementById('page-'+id);if(pg)pg.classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  const nls=document.querySelectorAll('.nav-link'),sbs=document.querySelectorAll('.sb-item');
+  if(navMap[id]!==undefined)nls[navMap[id]]?.classList.add('active');
+  if(sbMap[id]!==undefined)sbs[sbMap[id]]?.classList.add('active');
+  if(id==='dashboard'&&!_dInit)initDashCharts();
+  if(id==='irrigation'&&!_iInit)initIrrigChart();
+  if(id==='achievements'){animProgress();initAchChart();}
+  if(id==='home')runCounters();
+  window.scrollTo(0,0);
+}
+/* ── DARK MODE ── */
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  document.getElementById('modeIcon').className=document.body.classList.contains('dark')?'ti ti-sun':'ti ti-moon';
+}
+/* ── WELCOME ── */
+function closeWelcome(){document.getElementById('welcomeOverlay').classList.remove('open');}
+document.getElementById('welcomeOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeWelcome();});
+/* ── AUTH ── */
+let loggedIn=false;
+function openAuth(){document.getElementById('authOverlay').classList.add('open');}
+function closeAuth(){document.getElementById('authOverlay').classList.remove('open');}
+function authTab(t){
+  document.getElementById('formLogin').style.display=t==='login'?'':'none';
+  document.getElementById('formReg').classList.toggle('hidden',t!=='register');
+  document.getElementById('tabLogin').classList.toggle('active',t==='login');
+  document.getElementById('tabReg').classList.toggle('active',t==='register');
+}
+function doLogin(){
+  loggedIn=true;
+  // Get name from whichever form is visible
+  const inputs=document.querySelectorAll('#formLogin input[type=text],#formReg input[type=text]');
+  let firstName='';
+  inputs.forEach(inp=>{if(inp.placeholder&&(inp.placeholder.includes('Ravi')||inp.placeholder==='First name'||inp.placeholder.toLowerCase().includes('first'))&&!firstName)firstName=inp.value.trim();});
+  const emailInp=document.querySelector('#formLogin input[type=email]');
+  if(!firstName&&emailInp&&emailInp.value)firstName=emailInp.value.split('@')[0];
+  if(!firstName)firstName='Farmer';
+  const initials=firstName.slice(0,2).toUpperCase();
+  document.getElementById('userChipLabel').textContent=firstName;
+  const av=document.getElementById('userAvatarSm');
+  av.textContent='';av.style.fontSize='11px';av.style.fontWeight='700';av.textContent=initials;
+  closeAuth();
+  document.getElementById('userChip').onclick=openAuth;
+}
+function triggerPfp(){document.getElementById('pfpInput').click();}
+function previewPfp(inp){
+  if(!inp.files[0])return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const a=document.getElementById('pfpArea');
+    a.innerHTML='<div style="width:72px;height:72px;border-radius:50%;background:var(--g50);margin:0 auto 8px;overflow:hidden;border:3px solid var(--g200)"><img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover"></div><p style="font-size:12px;color:var(--g500);font-weight:600">Profile picture set ✓</p>';
+  };reader.readAsDataURL(inp.files[0]);
+}
+document.getElementById('authOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAuth();});
+/* ── CART ── */
+let cart=[];
+function toggleCart(){document.getElementById('cartPanel').classList.toggle('open');}
+function addToCart(name,icon,price,btn){
+  const existing=cart.find(i=>i.name===name);
+  if(existing){existing.qty++;} else {cart.push({name,icon,price,qty:1});}
+  renderCart();btn.textContent='✓ Added!';btn.style.background='var(--g400)';btn.style.color='#fff';
+  setTimeout(()=>{btn.textContent='Add to cart';btn.style.background='';btn.style.color='';},1800);
+  document.getElementById('cartPanel').classList.add('open');
+}
+function renderCart(){
+  const num=cart.reduce((a,i)=>a+i.qty,0);
+  const cn=document.getElementById('cartNum');
+  cn.textContent=num;cn.style.display=num>0?'flex':'none';
+  const body=document.getElementById('cartItems');
+  const empty=document.getElementById('cartEmpty');
+  const footer=document.getElementById('cartFooter');
+  if(cart.length===0){empty.style.display='';body.innerHTML='';footer.style.display='none';return;}
+  empty.style.display='none';footer.style.display='';
+  body.innerHTML=cart.map((item,idx)=>`
+    <div class="cart-item">
+      <div class="ci-icon">${item.icon}</div>
+      <div style="flex:1;min-width:0">
+        <div class="ci-name">${item.name}</div>
+        <div class="ci-price">₹${(item.price*item.qty).toLocaleString('en-IN')}</div>
+        <div class="ci-qty">
+          <button class="qty-btn" onclick="changeQty(${idx},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${idx},1)">+</button>
+        </div>
+      </div>
+      <button class="ci-remove" onclick="removeCart(${idx})"><i class="ti ti-trash"></i></button>
+    </div>`).join('');
+  const sub=cart.reduce((a,i)=>a+i.price*i.qty,0);
+  const gst=Math.round(sub*.18);const total=sub+99+gst;
+  document.getElementById('cartSubtotal').textContent='₹'+sub.toLocaleString('en-IN');
+  document.getElementById('cartGST').textContent='₹'+gst.toLocaleString('en-IN');
+  document.getElementById('cartTotal').textContent='₹'+total.toLocaleString('en-IN');
+  const ptb=document.getElementById('pay-total-btn');if(ptb)ptb.textContent=total.toLocaleString('en-IN');
+}
+function changeQty(idx,d){cart[idx].qty=Math.max(1,cart[idx].qty+d);renderCart();}
+function removeCart(idx){cart.splice(idx,1);renderCart();}
+function clearCart(){cart=[];renderCart();}
+/* ── PAYMENT ── */
+function openPay(){
+  const sub=cart.reduce((a,i)=>a+i.price*i.qty,0);
+  const gst=Math.round(sub*.18);const total=sub+99+gst;
+  const summary=document.getElementById('pay-order-summary');
+  summary.innerHTML='<div style="font-size:13px;font-weight:700;color:var(--gray900);margin-bottom:8px">Order summary</div>'+
+    cart.map(i=>`<div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--gray500);margin-bottom:4px"><span>${i.icon} ${i.name} ×${i.qty}</span><span>₹${(i.price*i.qty).toLocaleString('en-IN')}</span></div>`).join('')+
+    `<div style="border-top:1px solid var(--gray200);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:var(--gray900)"><span>Total (incl. GST+delivery)</span><span>₹${total.toLocaleString('en-IN')}</span></div>`;
+  document.getElementById('cartPanel').classList.remove('open');
+  document.getElementById('payOverlay').classList.add('open');
+}
+function closePay(){document.getElementById('payOverlay').classList.remove('open');document.getElementById('payStep1').classList.remove('hidden');document.getElementById('payStep2').classList.add('hidden');document.getElementById('payStep3').classList.add('hidden');}
+function payNext(){document.getElementById('payStep1').classList.add('hidden');document.getElementById('payStep2').classList.remove('hidden');}
+function payBack(){document.getElementById('payStep2').classList.add('hidden');document.getElementById('payStep1').classList.remove('hidden');}
+function payConfirm(){
+  document.getElementById('payStep2').classList.add('hidden');
+  document.getElementById('payStep3').classList.remove('hidden');
+  document.getElementById('ordNum').textContent=Math.floor(8000+Math.random()*1999);
+}
+document.getElementById('payOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closePay();});
+function fmtCard(i){let v=i.value.replace(/\D/g,'').substring(0,16);i.value=v.replace(/(.{4})/g,'$1 ').trim();}
+function fmtExpiry(i){let v=i.value.replace(/\D/g,'');if(v.length>=2)v=v.substring(0,2)+'/'+v.substring(2,4);i.value=v;}
+/* ── CANOPY ── */
+function updateCanopy(){
+  const h=+document.getElementById('rHum').value,t=+document.getElementById('rTmp').value,
+        s=+document.getElementById('rSoil').value,l=+document.getElementById('rLight').value;
+  document.getElementById('lHum').textContent=h+'%';
+  document.getElementById('lTmp').textContent=t+'°C';
+  document.getElementById('lSoil').textContent=s+'%';
+  document.getElementById('lLight').textContent=l+' Lux';
+  const op=Math.min(100,Math.max(0,Math.round((h/100)*(100-Math.abs(t-25)))));
+  document.getElementById('aiMsg').textContent=op>40
+    ?`Canopy open at ${op}% — optimal for transpiration capture. Water recovery active.`
+    :`Canopy closed — humidity low or temperature out of optimal range (${t}°C).`;
+  drawCanopy(op,h,t,s,l);
+}
+function drawCanopy(op,h,t,s,l){
+  const NS='http://www.w3.org/2000/svg';
+  ['cPanels','cDrops','cPlants'].forEach(id=>document.getElementById(id).innerHTML='');
+  const P=document.getElementById('cPanels'),D=document.getElementById('cDrops'),PL=document.getElementById('cPlants');
+  const cnt=8,pw=58,gap=71,sx=56,py=30,ph=20,go=(op/100)*13;
+  for(let i=0;i<cnt;i++){
+    const x=sx+i*gap,r=document.createElementNS(NS,'rect');
+    r.setAttribute('x',x);r.setAttribute('y',py);r.setAttribute('width',pw);r.setAttribute('height',Math.max(4,ph-go));
+    r.setAttribute('fill','#22B07D');r.setAttribute('rx','3');r.setAttribute('opacity','0.9');P.appendChild(r);
+    if(op>30&&i%2===0){for(let d=0;d<3;d++){const e=document.createElementNS(NS,'ellipse');e.setAttribute('cx',x+12+d*18);e.setAttribute('cy',py+ph+8+d*20);e.setAttribute('rx','2.5');e.setAttribute('ry','3.5');e.setAttribute('fill','#7DD9FF');e.setAttribute('opacity','0.8');D.appendChild(e);}}
+  }
+  const cols=['#22B07D','#3DBA60','#0F7A5A','#7DD9B3','#22B07D','#3DBA60','#0F7A5A','#7DD9B3'];
+  for(let p=0;p<8;p++){
+    const px=72+p*72,ph2=30+(s/100)*26;
+    const stem=document.createElementNS(NS,'line');stem.setAttribute('x1',px);stem.setAttribute('y1',184);stem.setAttribute('x2',px);stem.setAttribute('y2',184-ph2);stem.setAttribute('stroke',cols[p]);stem.setAttribute('stroke-width','2.5');PL.appendChild(stem);
+    const leaf=document.createElementNS(NS,'ellipse');leaf.setAttribute('cx',px);leaf.setAttribute('cy',184-ph2);leaf.setAttribute('rx','12');leaf.setAttribute('ry','7');leaf.setAttribute('fill',cols[p]);leaf.setAttribute('opacity','0.92');PL.appendChild(leaf);
+  }
+}
+/* ── ZONE TOGGLE ── */
+function toggleZone(id){const el=document.getElementById(id);const on=el.classList.contains('on');el.classList.toggle('on',!on);el.classList.toggle('off',on);el.setAttribute('aria-checked',String(!on));}
+/* ── MARKETPLACE ── */
+function filterMkt(cat,btn){document.querySelectorAll('.cat-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.mkt-card').forEach(c=>c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none');}
+/* ── DISEASE SCAN ── */
+function simScan(){const t=document.getElementById('uzTitle');t.textContent='🔍 Analyzing leaf image…';setTimeout(()=>{t.textContent='✅ Scan complete — click to run another analysis';},1400);}
+/* ── COMMUNITY ── */
+function likePost(btn){const s=btn.querySelector('span');const liked=btn.classList.contains('liked');btn.classList.toggle('liked',!liked);btn.querySelector('i').className=liked?'ti ti-heart':'ti ti-heart-filled';s.textContent=parseInt(s.textContent)+(liked?-1:1);}
+function showComment(btn){
+  const card=btn.closest('.forum-card');const ex=card.querySelector('.cmt-box');if(ex){ex.remove();return;}
+  const box=document.createElement('div');box.className='cmt-box';
+  box.style.cssText='margin-top:12px;display:flex;gap:8px';
+  box.innerHTML='<input style="flex:1;padding:9px 13px;border:1.5px solid var(--gray200);border-radius:var(--r-md);font-size:13.5px;background:var(--gray50);color:var(--gray900);font-family:var(--font-b);outline:none" placeholder="Write a comment…" onkeydown="if(event.key===\'Enter\')postCmt(this)">'
+    +'<button onclick="postCmt(this.previousElementSibling)" style="background:linear-gradient(135deg,var(--g400),var(--g600));color:#fff;border:none;padding:9px 15px;border-radius:var(--r-md);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-b)">Post</button>';
+  btn.closest('.fc-actions').after(box);box.querySelector('input').focus();
+}
+function postCmt(inp){
+  if(!inp.value.trim())return;
+  const cmt=document.createElement('div');cmt.style.cssText='margin-top:10px;background:var(--g50);border-radius:var(--r-md);padding:10px 14px;font-size:13.5px;color:var(--gray600);border:1px solid var(--g100);animation:fadeIn .2s ease';
+  cmt.innerHTML='<strong style="color:var(--g500)">You:</strong> '+inp.value;
+  inp.closest('.cmt-box').before(cmt);inp.closest('.cmt-box').remove();
+}
+function postForum(){
+  const inp=document.getElementById('npInput');if(!inp.value.trim())return;
+  const tags=Array.from(document.querySelectorAll('.tag-chip.active')).map(t=>t.textContent.trim()).join(' ');
+  const card=document.createElement('div');card.className='forum-card';
+  card.style.cssText='animation:fadeIn .3s ease';
+  card.innerHTML=`<div class="fc-hdr"><div class="fc-av">You</div><div><div class="fc-author">You <span style="font-size:11px;color:var(--b400);font-weight:700">🌱 Member</span></div><div class="fc-time">Just now</div></div></div><div class="fc-body">${inp.value}</div><div><span class="fc-tag">${tags||'#general'}</span></div><div class="fc-actions"><button class="fc-act" onclick="likePost(this)"><i class="ti ti-heart"></i> <span>0</span></button><button class="fc-act" onclick="showComment(this)"><i class="ti ti-message-circle"></i> 0</button><button class="fc-act"><i class="ti ti-share"></i> Share</button></div>`;
+  document.getElementById('forumFeed').prepend(card);inp.value='';
+}
+/* ── TIPS ── */
+const tips=['Watering plants early morning (6–8 AM) reduces evaporation loss by up to 40%. Plant Cloud™ automatically schedules irrigation during this optimal window.','Mulching around plant bases retains up to 70% more soil moisture. The Plant Cloud™ canopy captures organic moisture from mulch decomposition too.','Regular pH testing is the most overlooked factor in crop failure. Most vegetables thrive between pH 6.0–7.0. Your Plant Cloud™ pH sensor alerts you when levels drift.','Crop rotation improves soil fertility and breaks disease cycles. Plant Cloud™ AI tracks zone history and recommends rotation schedules based on nutrient depletion data.','Healthy soil has more living organisms per teaspoon than there are people on Earth. Your Plant Cloud™ sensors tell you exactly when nutrients are needed — no guessing!'];
+let tipIdx=0;
+function showTip(i){tipIdx=i;document.getElementById('tipText').textContent=tips[i];document.querySelectorAll('.tip-dot').forEach((d,j)=>d.classList.toggle('on',j===i));}
+setInterval(()=>showTip((tipIdx+1)%tips.length),5000);
+/* ── 3D TOUR HOTSPOTS ── */
+const hotspots={canopy:{title:'Self-Watering Canopy',desc:'Captures transpiration water and atmospheric humidity. Adjustable openings release condensed water directly to crops — up to 200L/day.'},sensor:{title:'5-Sensor Array',desc:'Temperature, humidity, soil moisture, pH and light intensity sensors log data continuously. Feeds real-time data to the AI model for decision-making.'},ai:{title:'AI Control Hub',desc:'Random Forest ML model processes all sensor inputs. Makes real-time decisions on canopy opening percentage, irrigation timing and alerts.'},solar:{title:'Solar Power Module',desc:'10W solar panel powers the entire system including all sensors, gateway and servo motors. Zero grid electricity needed for standard operation.'}};
+function showHotspot(key){
+  const info=hotspots[key];const tip=document.getElementById('tourTooltip');
+  tip.innerHTML=`<div style="font-size:13px;font-weight:800;color:#FFCA28;margin-bottom:5px">${info.title}</div><div style="font-weight:400;font-size:12px;opacity:.9;line-height:1.55">${info.desc}</div>`;
+  tip.style.display='block';tip.style.top='40%';tip.style.left='50%';tip.style.transform='translate(-50%,-50%)';
+  setTimeout(()=>{tip.style.display='none';},4000);
+}
+/* ── PLANTBOT ── */
+let botOpen=false;
+function toggleBot(){botOpen=!botOpen;document.getElementById('chatBox').classList.toggle('open',botOpen);const fab=document.getElementById('botFab');fab.classList.toggle('open',botOpen);fab.textContent=botOpen?'+':'🌱';}
+const botKB={ph:'🌱 For most vegetables, keep soil pH 6.0–7.0. If below 6.0, add lime (calcium carbonate) — 100–200g/sqm. Re-test after 2 weeks. Your Plant Cloud™ pH sensor confirms when you reach the ideal range!',moisture:'💧 Soil moisture targets vary: tomatoes 50–65%, wheat 35–45%, leafy greens 60–75%. Your Plant Cloud™ canopy adjusts delivery automatically. Customize zone targets in the irrigation panel.',disease:'🔬 Common tomato diseases: early blight (brown spots), late blight (dark patches), powdery mildew (white coating). Upload a leaf photo in Disease AI for instant diagnosis. Act within 24h!',irrigation:'💦 Plant Cloud™ canopy recovers water from plant transpiration and atmospheric humidity. On a 100-plant system, you can recover 80–200L daily depending on crop and weather.',fertilizer:'🌿 Use NPK fertilizers based on soil test results. A balanced 19:19:19 formula works for most crops. Apply in early morning or evening, never during peak heat. Over-fertilizing causes nutrient burn!',setup:'⚙️ Setting up Plant Cloud™: (1) Plant sensors at 15cm depth (2) Mount canopy 1.5–2m above crops (3) Connect gateway to Wi-Fi (4) Run calibration mode in app. Full setup takes ~2 hours!',wheat:'🌾 Wheat thrives in pH 6.0–7.0 with moisture ~35–45%. Space rows 15–20cm apart. Reduce irrigation during grain fill (dry down) to improve grain quality. Harvest when moisture drops below 14%.',tomato:'🍅 Tomatoes need consistent moisture (50–65%), good drainage, pH 6.2–6.8. Common issues: blossom drop from temp extremes, blossom end rot from calcium deficiency — all monitored by Plant Cloud™!',default:'🤔 Great question! I can help with soil health, crop diseases, irrigation, fertilizers and Plant Cloud™ setup. Could you give a bit more detail? Which crop and what\'s your specific challenge?'};
+const _navItems=[{label:'🏠 Home',page:'home'},{label:'📊 Live Dashboard',page:'dashboard'},{label:'🔬 Disease AI',page:'disease'},{label:'💧 Irrigation',page:'irrigation'},{label:'🏡 3D Tour',page:'tour'},{label:'👨\u200D🌾 Community',page:'community'},{label:'🏆 Achievements',page:'achievements'},{label:'🛒 Marketplace',page:'market'}];
+function appendMsg(text,who){const msgs=document.getElementById('chatMsgs');const el=document.createElement('div');el.className='chat-msg '+who;el.innerHTML=text;msgs.appendChild(el);msgs.scrollTop=msgs.scrollHeight;}
+function appendBotMsg(text){
+  const msgs=document.getElementById('chatMsgs');
+  const bubble=document.createElement('div');bubble.className='chat-msg bot';bubble.innerHTML=text;msgs.appendChild(bubble);
+  const nav=document.createElement('div');
+  nav.style.cssText='margin-top:8px;background:var(--g50);border:1.5px solid var(--g100);border-radius:12px;overflow:hidden;animation:fadeIn .3s ease';
+  let html='<div style="font-size:10.5px;color:var(--g600);font-weight:700;padding:8px 12px 4px;letter-spacing:.05em;text-transform:uppercase">📍 Go to a page</div>';
+  _navItems.forEach(l=>{html+=`<button onclick="showPage('${l.page}');toggleBot()" style="display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;background:none;border:none;border-top:1px solid var(--g100);font-size:12.5px;font-weight:600;color:var(--g700);cursor:pointer;text-align:left;font-family:var(--font-b);transition:background .15s" onmouseover="this.style.background='var(--g400)';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='var(--g700)'">${l.label}</button>`;});
+  nav.innerHTML=html;msgs.appendChild(nav);msgs.scrollTop=msgs.scrollHeight;
+}
+function sendChat(){const inp=document.getElementById('chatInput');const msg=inp.value.trim();if(!msg)return;appendMsg(msg,'user');inp.value='';showTyping();setTimeout(()=>{removeTyping();appendBotMsg(getBotReply(msg.toLowerCase()));},900+Math.random()*600);}
+function quickSend(msg){document.getElementById('chatInput').value=msg;sendChat();}
+let typEl=null;
+function showTyping(){const msgs=document.getElementById('chatMsgs');typEl=document.createElement('div');typEl.className='chat-msg bot typing';typEl.innerHTML='<span></span><span></span><span></span>';msgs.appendChild(typEl);msgs.scrollTop=msgs.scrollHeight;}
+function removeTyping(){if(typEl){typEl.remove();typEl=null;}}
+function getBotReply(msg){
+  if(msg.includes('ph')||msg.includes('acid')||msg.includes('lime')||msg.includes('alkaline'))return botKB.ph;
+  if(msg.includes('moist')||msg.includes('water')||msg.includes('irrigat')||msg.includes('drip'))return botKB.irrigation;
+  if(msg.includes('disease')||msg.includes('blight')||msg.includes('mildew')||msg.includes('fungus'))return botKB.disease;
+  if(msg.includes('fertil')||msg.includes('npk')||msg.includes('nutrient'))return botKB.fertilizer;
+  if(msg.includes('setup')||msg.includes('install')||msg.includes('how does')||msg.includes('plant cloud'))return botKB.setup;
+  if(msg.includes('wheat'))return botKB.wheat;
+  if(msg.includes('tomato'))return botKB.tomato;
+  if(msg.includes('soil'))return botKB.moisture;
+  if(msg.includes('hello')||msg.includes('hi')||msg.includes('hey'))return '👋 Hello! I\'m PlantBot. Ask me about soil health, crop diseases, irrigation, fertilizers or Plant Cloud™ setup!';
+  if(msg.includes('kerala')||msg.includes('monsoon'))return '🌏 For Kerala\'s tropical climate, excellent crops include tapioca, banana, coconut, pepper and leafy vegetables. The canopy is especially effective during monsoon for capturing excess humidity!';
+  return botKB.default;
+}
+/* ── COUNTERS ── */
+let countersRan=false;
+function runCounters(){
+  if(countersRan)return;countersRan=true;
+  document.querySelectorAll('.counter').forEach(el=>{
+    const target=parseInt(el.dataset.t);let cur=0;const dur=1400,step=20,inc=target/(dur/step);
+    const t=setInterval(()=>{cur=Math.min(cur+inc,target);el.textContent=Math.floor(cur).toLocaleString();if(cur>=target){clearInterval(t);el.textContent=target.toLocaleString();}},step);
+  });
+}
+/* ── PROGRESS BARS ── */
+function animProgress(){document.querySelectorAll('.prog-fill').forEach(b=>{setTimeout(()=>{b.style.width=b.dataset.w;},200);});}
+/* ── CHARTS ── */
+let _dInit=false,_iInit=false,_achInit=false,_homeInit=false;
+/* ── SENSOR DEVICE DATA ── */
+const DEVICES={
+  'PC-2024-KL-001':{loc:'Kochi, Kerala',crop:'Tomato & Leafy Greens',temp:30.6,hum:54,soil:45,light:650,ph:6.2,water:148,tempStatus:'Optimal',humStatus:'Good',soilStatus:'Below ideal',soilClass:'d-dn',lightStatus:'Good',phStatus:'Slightly acidic',phClass:'d-dn',waterStatus:'+12% today',trends:{temp:[26,27,29,31,32,30,28,27,26,25],hum:[62,58,52,49,47,51,55,60,64,66],moisture:[55,50,45,42,48,52],phArr:[6.5,6.4,6.2,6.1,6.3,6.4],yield:[420,480,510,540,580,620],waterUse:[88,82,75,70,66,61]}},
+  'PC-2024-MH-042':{loc:'Nashik, Maharashtra',crop:'Onion & Wheat',temp:28.1,hum:42,soil:38,light:820,ph:7.1,water:92,tempStatus:'Optimal',humStatus:'Low',soilStatus:'Good',soilClass:'d-up',lightStatus:'High',phStatus:'Optimal',phClass:'d-up',waterStatus:'+5% today',trends:{temp:[24,25,28,30,29,27,26,25,24,23],hum:[48,44,40,38,36,40,44,47,50,51],moisture:[40,38,36,35,37,39],phArr:[7.0,7.1,7.2,7.1,7.0,7.1],yield:[380,420,460,500,530,570],waterUse:[95,88,80,74,70,65]}},
+  'PC-2025-TN-007':{loc:'Tiruvannamalai, Tamil Nadu',crop:'Bitter Gourd & Pepper',temp:33.4,hum:68,soil:62,light:740,ph:6.7,water:187,tempStatus:'High — watch crops',humStatus:'Optimal',soilStatus:'Good',soilClass:'d-up',lightStatus:'Good',phStatus:'Optimal',phClass:'d-up',waterStatus:'+22% today',trends:{temp:[29,31,33,35,36,34,33,32,31,30],hum:[65,62,60,58,56,60,64,68,70,72],moisture:[60,58,56,55,57,60],phArr:[6.8,6.7,6.6,6.7,6.7,6.8],yield:[460,510,540,580,620,660],waterUse:[82,76,70,64,60,55]}}
+};
+let activeDevice=null;
+function loadSensorData(){
+  const val=document.getElementById('modelInput').value.trim().toUpperCase();
+  const errEl=document.getElementById('modelError');
+  if(!val){errEl.style.display='block';errEl.textContent='⚠️ Please enter a model number';return;}
+  if(!DEVICES[val]){errEl.style.display='block';errEl.textContent='❌ Model "'+val+'" not found. Check your device label or try a demo model below.';return;}
+  errEl.style.display='none';
+  activeDevice=DEVICES[val];
+  // Banner
+  document.getElementById('deviceModelLabel').textContent=val;
+  document.getElementById('deviceLocLabel').textContent='📍 '+activeDevice.loc+' · '+activeDevice.crop;
+  // Tiles
+  document.getElementById('sensorTiles').innerHTML=`
+    <div class="stat-tile st-y"><div class="st-label"><i class="ti ti-thermometer" style="color:#D85A30"></i> Temperature</div><div class="st-val">${activeDevice.temp}<span class="st-unit">°C</span></div><div class="st-delta d-up">${activeDevice.tempStatus}</div></div>
+    <div class="stat-tile st-b"><div class="st-label"><i class="ti ti-ripple" style="color:var(--b400)"></i> Humidity</div><div class="st-val">${activeDevice.hum}<span class="st-unit">%</span></div><div class="st-delta d-up">${activeDevice.humStatus}</div></div>
+    <div class="stat-tile st-g"><div class="st-label"><i class="ti ti-plant" style="color:var(--g400)"></i> Soil moisture</div><div class="st-val">${activeDevice.soil}<span class="st-unit">%</span></div><div class="st-delta ${activeDevice.soilClass}">${activeDevice.soilStatus}</div></div>
+    <div class="stat-tile st-y"><div class="st-label"><i class="ti ti-sun" style="color:var(--y500)"></i> Light</div><div class="st-val">${activeDevice.light}<span class="st-unit">Lx</span></div><div class="st-delta d-up">${activeDevice.lightStatus}</div></div>
+    <div class="stat-tile st-p"><div class="st-label"><i class="ti ti-flask" style="color:var(--p400)"></i> Soil pH</div><div class="st-val">${activeDevice.ph}</div><div class="st-delta ${activeDevice.phClass}">${activeDevice.phStatus}</div></div>
+    <div class="stat-tile st-b"><div class="st-label"><i class="ti ti-cloud-rain" style="color:var(--b400)"></i> Water rec.</div><div class="st-val">${activeDevice.water}<span class="st-unit">L</span></div><div class="st-delta d-up">${activeDevice.waterStatus}</div></div>`;
+  document.getElementById('modelGate').style.display='none';
+  document.getElementById('sensorData').style.display='block';
+  // Reset & redraw charts with device data
+  _dInit=false;
+  ['trendChart','soilChart','analyticsChart'].forEach(id=>{const c=document.getElementById(id);if(c&&c._chart)c._chart.destroy();});
+  initDashCharts();
+}
+function disconnectDevice(){
+  activeDevice=null;
+  document.getElementById('sensorData').style.display='none';
+  document.getElementById('modelGate').style.display='block';
+  document.getElementById('modelInput').value='';
+  _dInit=false;
+}
+function initHomeCharts(){
+  if(_homeInit)return;_homeInit=true;
+  new Chart(document.getElementById('waterChart'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Transpiration',data:[52,58,48,68,78,72,92],backgroundColor:'rgba(34,176,125,0.82)',borderRadius:5,stack:'s'},{label:'Humidity',data:[33,34,30,42,47,46,56],backgroundColor:'rgba(59,154,225,0.75)',borderRadius:5,stack:'s'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,ticks:{font:{size:11}}},y:{stacked:true,ticks:{font:{size:11}}}}}});
+}
+function initDashCharts(){
+  if(_dInit)return;_dInit=true;
+  const d=activeDevice?activeDevice.trends:{temp:[26,27,29,31,32,30,28,27,26,25],hum:[62,58,52,49,47,51,55,60,64,66],moisture:[55,50,45,42,48,52],phArr:[6.5,6.4,6.2,6.1,6.3,6.4],yield:[420,480,510,540,580,620],waterUse:[88,82,75,70,66,61]};
+  const hrs=['06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','00:00'];
+  const tc=document.getElementById('trendChart');if(tc._chartInst)tc._chartInst.destroy();
+  tc._chartInst=new Chart(tc,{type:'line',data:{labels:hrs,datasets:[{label:'Temp',data:d.temp,borderColor:'#D85A30',backgroundColor:'rgba(216,90,48,0.07)',tension:.4,pointRadius:3},{label:'Humidity',data:d.hum,borderColor:'#3B9AE1',backgroundColor:'rgba(59,154,225,0.07)',tension:.4,pointRadius:3,borderDash:[5,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11}}},y:{ticks:{font:{size:11}}}}}});
+  const sc=document.getElementById('soilChart');if(sc._chartInst)sc._chartInst.destroy();
+  sc._chartInst=new Chart(sc,{type:'line',data:{labels:['06:00','09:00','12:00','15:00','18:00','21:00'],datasets:[{label:'Moisture',data:d.moisture,borderColor:'#22B07D',backgroundColor:'rgba(34,176,125,0.08)',tension:.4,pointRadius:3},{label:'pH',data:d.phArr,borderColor:'#8B7CF6',backgroundColor:'rgba(139,124,246,0.08)',tension:.4,pointRadius:3,borderDash:[5,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11}}},y:{ticks:{font:{size:11}}}}}});
+  const ac=document.getElementById('analyticsChart');if(ac._chartInst)ac._chartInst.destroy();
+  ac._chartInst=new Chart(ac,{type:'bar',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'Yield',data:d.yield,backgroundColor:'rgba(34,176,125,0.82)',borderRadius:5},{label:'Water',data:d.waterUse,backgroundColor:'rgba(59,154,225,0.75)',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11}}},y:{ticks:{font:{size:11}}}}}});
+}
+function initIrrigChart(){
+  _iInit=true;
+  new Chart(document.getElementById('irrigChart'),{type:'bar',data:{labels:['Zone A','Zone B','Zone C','Zone D'],datasets:[{label:'Water (L)',data:[38,55,29,12],backgroundColor:['rgba(34,176,125,.82)','rgba(239,83,80,.82)','rgba(59,154,225,.82)','rgba(255,167,38,.82)'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:12}}},y:{ticks:{font:{size:11}}}}}});
+}
+function initAchChart(){
+  if(_achInit)return;_achInit=true;
+  new Chart(document.getElementById('achChart'),{type:'radar',data:{labels:['Water efficiency','Crop health','AI automation','Sustainability','Community','Disease control'],datasets:[{label:'This season',data:[78,84,91,65,42,88],backgroundColor:'rgba(34,176,125,0.15)',borderColor:'#22B07D',pointBackgroundColor:'#22B07D',pointRadius:4,fill:true}]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{suggestedMin:0,suggestedMax:100,ticks:{font:{size:10}},grid:{color:'rgba(0,0,0,0.06)'}}},plugins:{legend:{display:false}}}});
+}
+/* ── INIT ── */
+drawCanopy(51,72,28,45,650);
+setTimeout(()=>{initHomeCharts();runCounters();},150);
+</script>
+</body>
+</html>
